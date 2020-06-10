@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Quickstart</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Quickstart">
+
+    <subsection name="Download and install">
+      <p>
+        To start with the Extend first download binary package
+        from <a href="">here</a>.
+      </p>
+      <p>
+        Next step is to unzip downloaded package.
+      </p>
+    </subsection>
+
+    <subsection name="Extend Directory Structure">
+      <p>
+        When unzipped you should see following directory structure:
+      </p>
+<source><![CDATA[
+<root>
+  bin
+    bootstrap.jar - bootstrap jar file
+    shutdown-client.jar - shutdown client jar file
+    start.sh - startup shell script
+    stop.sh - shutdown shell script
+  lib
+    libraries needed for the server to work
+  server
+    default
+      config
+        server.xml - the server's application context
+      lib
+        libraries needed for services - they are going to be visible from all modules
+      deploy
+        bean-console.dar
+        danube-freemarker.sar
+        danube-jsf.sar
+        danube.sar
+        danube-tapestry.sar
+        danube-velocity.sar
+        danube-webflow.sar
+]]></source>
+      <p>
+        Deploy directory is place where service archives(.sar), danube web archives (.dar) or
+        j2ee web applicaion archives (.war) can be placed.
+        For web archives and danube web archives context will be assumed
+        from the directory name - up to the &quot;.&quot; (dot).
+        (That can be changed, see below).
+      </p>
+    </subsection>
+
+    <subsection name="starting">
+      <h2>Starting and stopping the server</h2>
+      <p>
+        Now you should start the application server. You can do it by following command:
+      </p>
+<source><![CDATA[
+sh bin/start.sh
+
+or
+
+java -jar bin/bootstrap.jar
+
+or
+
+java -cp bin org.abstracthorizon.spring.server.Bootstrap
+]]></source>
+      <p>
+        To check internals of the server point your browser
+        to: <code>http://localhost:8080/bean-console/</code>.
+      </p>
+      <p>
+        To stop the server use following command:
+      </p>
+<source><![CDATA[
+sh bin/stop.sh
+
+or
+
+java -jar bin/shutdown-client.jar
+
+or
+
+java -cp bin org.abstracthorizon.spring.server.support.Shutdown
+]]></source>
+    </subsection>
+
+    <subsection name="Bean Console">
+      <p>
+        Now the server is started you can check it by checking its internal
+        structure by using <i>Bean Console</i>.
+        Bean Console is running under Danube web server and is
+        available on http://localhost:8080/bean-console.
+      </p>
+      <p>
+        Check server/default/deploy/bean-console.dar/web-application.xml how to
+        make access to Bean Console more
+        secure (using SSL + keystore provided for authentication).
+      </p>
+      <p>
+        When in Bean Console you can check DeploymentManager for all deployed
+        modules. Here are some interesing stuff that can be done with Bean Console:
+      </p>
+      <ul>
+        <li>
+          <code>support</code> module has <code>ServerControl</code> bean with <code>shutdownServer()</code> method.
+          Url: http://localhost:8080/bean-console/invoke/[DeploymentManager]/deployedModules/[support]/[ServerControl]/
+        </li>
+        <li>
+          <code>DeploymentManager</code> has method <code>loadAndDeploy(URL)</code>. As a parameter you can supply
+          URL of <code>.war</code> archive which will be in turn downloaded and deployed with Tomcat.
+          Similar goes for <code>.dar</code> for Danube or <code>.sar</code> for simple SAS service archive.
+          URL: http://localhost:8080/bean-console/[DeploymentManager]
+        </li>
+        <!--
+        <li>
+          <code>Bean Console</code> has <code>login-module</code> bean with methods that can list users defined in the
+          keystore, add new user with username or remove existing user (methods <code>listUsers()</code>,
+          <code>addUser(String, String)</code>, <code>changePassword(String, String, String)</code> and <code>removeUser(String)</code>).
+          Method <code>changePassword(String, String, String)</code> accepts following parameters: username, old password, new password.
+
+          URL: http://localhost:8080/bean-console/bean/DeploymentManager/deployedModules/bean-console/login-module
+        </li>
+        -->
+      </ul>
+    </subsection>
+
+    <subsection name="Services">
+      <p>
+        Now when server is running you can add your own services to it. All you need to
+        do is to create directory with &quot;.sar&quot; extension, place service.xml
+        spring beans definition xml file in it and define beans. A bean that is to be a service
+        should have following tag(s) added to the definition (immediately
+        after <code>&lt;bean ...&gt;</code> tag). Here is an example how tomcat is defined as a service:
+      </p>
+<source><![CDATA[
+<bean name="tomcat" class="org.apache.catalina.startup.Embedded">
+  <service>
+  <create-method/>
+  <start-method>start</start-method>
+  <stop-method>stop</stop-method>
+  <destroy-method/>
+  </service>
+
+  <property name="name"><value>Tomcat</value></property>
+  <property name="catalinaHome"><value>deploy/tomcat.sar</value></property>
+</bean>
+]]></source>
+      <p>
+        Specifying empty <code>&lt;create-method/&gt;</code>, <code>&lt;start-method/&gt;</code>,
+        <code>&lt;stop-method/&gt;</code> or <code>&lt;destroy-method/&gt;</code> tag means
+        there is no such method to be called and it will be skipped.
+      </p>
+      <p>
+        If only <code>&lt;service/&gt;</code> is added then it is assumed that
+        create, start, stop and destory methods are called exactly like that.
+        If any of them is missing then it will be omitted. If name of any of these methods
+        is different then they can be specified as in above example.
+        Now container will call these methods in that order
+        when directory with &quot;.sar&quot; extension is placed under deploy
+        directory (or at the startup).
+      </p>
+      <p>
+        Root of service archive directory is added to the class path as well as
+        all &quot;.jar&quot; archives inside of it.
+      </p>
+    </subsection>
+    <subsection name="Dependencies">
+      <p>
+        Service archives (called as <code>Modules</code> - entities that can be
+        managed, that can be created, started, stopped, destroyed)
+        can form a hierarchy of depedencies. If archive (module) &quot;A&quot; has some
+        code (or &quot;.jar&quot;/libraries) that archive (module) &quot;B&quot; requires
+        it is done by specifying <code>&lt;depends-on&gt;</code> tag at the beginning of the
+        service.xml file. Here is an example:
+      </p>
+<source><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <depends-on>danube</depends-on>
+</beans>
+]]></source>
+      <p>
+        Note: this is a FreeMarker Danube integration module...
+      </p>
+    </subsection>
+
+  </section>
+
+</body>
+</document>

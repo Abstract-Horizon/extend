@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans default-lazy-init="true">
+
+    <depends-on>danube</depends-on>
+    <depends-on>danube-freemarker</depends-on>
+
+  <!-- this same context path would be picked from the module's name -->
+  <!-- context-path>/bean-console</context-path -->
+
+  <!--
+    Make following definition available if you want to have simple
+    bean console anyone can access
+    Note: don't forget to comment out next alias definition
+  -->
+  <alias name="web-application-main" alias="web-application" />
+
+  <!--
+    Make following definition available if you want to have secure access
+    to bean console through SSL + authentication from keystore provided.
+    Note: don't forget to comment out previous alias definition
+  -->
+  <!-- alias name="web-application-secure" alias="web-application" / -->
+
+  <!--
+    This is main entry point for Danube web applications. A bean with 'web-application' name of
+    ConnectionHandler class must exist. This bean ensures that it is accessed through HTTPS. If
+    you try to access it through HTTP it redirects to port 8443 as HTTPS.
+
+    Also, embedded in it is JAASAuthenticator that authenticates web application based on
+    login module with 'testcontext' name (defined at the end of this file). It checks only for
+    username and password - no extra credentials are needed.
+  -->
+<!--
+  <bean name="web-application-secure" class="org.abstracthorizon.danube.http.util.EnsureHTTPS">
+    <property name="handler">
+      <bean class="org.abstracthorizon.danube.http.auth.JAASAuthenticator">
+        <property name="loginContextName" value="testcontext"/>
+        <property name="handler" ref="web-application-main"/>
+      </bean>
+    </property>
+    <property name="port" value="8443"/>
+  </bean>
+-->
+
+  <!--
+    This bean defines beans application context.
+    It references to two components: File component that accepts only file named "style.css" and
+    MVC controller defined at the root of this application ("/") and "/display" path.
+    (this is an example of same component being defined at different paths)
+  -->
+  <bean name="web-application-main" class="org.abstracthorizon.danube.http.HTTPContext">
+    <property name="components">
+      <list>
+        <bean class="org.abstracthorizon.danube.http.matcher.Pattern">
+          <property name="pattern" value="/style\.css"/>
+          <property name="connectionHandler" ref="beans-files"/>
+          <property name="matchAsComponentPath" value="false"/>
+        </bean>
+        <bean class="org.abstracthorizon.danube.http.matcher.Pattern">
+          <property name="pattern" value=".*/index\.html"/>
+          <property name="connectionHandler" ref="mvc.display"/>
+          <property name="matchAsComponentPath" value="false"/>
+        </bean>
+        <bean class="org.abstracthorizon.danube.http.matcher.Prefix">
+          <property name="prefix" value="/"/>
+          <property name="connectionHandler" ref="webdav-handler"/>
+        </bean>
+      </list>
+    </property>
+  </bean>
+
+
+  <!--
+    WebDAV controller
+  -->
+  <bean name="webdav-handler" class="org.abstracthorizon.danube.webdav.java.JavaWebDAVHandler">
+    <!-- property name="rootObject" ref="parent-context"/ -->
+  </bean>
+
+  <!--
+    MVC controller
+  -->
+  <bean name="mvc.display" class="org.abstracthorizon.danube.http.HTTPMVCConnectionHandler">
+    <property name="controller" ref="displayController"/>
+    <property name="view" ref="freemarkerViewAdapter"/>
+  </bean>
+
+  <!--
+    This is display controller - a controller (ConnectionHandler) that prpares page to be displayed
+  -->
+  <bean name="displayController" class="org.abstracthorizon.danube.beanconsole.DisplayController">
+    <property name="componentPath" value=""/>
+    <!-- property name="rootObject" ref="parent-context"/ -->
+    <property name="pageName" value="index.html"/>
+  </bean>
+
+  <!--
+    This controllers invokes
+  -->
+  <bean name="invokeController" class="org.abstracthorizon.danube.http.HTTPMVCConnectionHandler">
+    <property name="controller">
+      <bean class="org.abstracthorizon.danube.beanconsole.InvokeController">
+        <constructor-arg ref="displayController" />
+      </bean>
+    </property>
+    <property name="view" ref="freemarkerViewAdapter"/>
+  </bean>
+
+  <!--
+    This bean defines serving files from directory "pages" as given file path.
+  -->
+  <bean name="beans-files" class="org.abstracthorizon.danube.webdav.spring.SpringResourceWebDAVConnectionHandler">
+    <property name="resourcePath" value="pages"/>
+    <property name="readOnly" value="true"/>
+  </bean>
+
+  <!--
+    This is FreeMarker view adapter.
+    It defines directory "pages" as location of templates and ".page" as templates' suffix.
+  -->
+  <bean id="freemarkerViewAdapter" class="org.abstracthorizon.danube.freemarker.FreeMarkerViewAdapter" init-method="init">
+    <property name="templatesURL" value="pages"/>
+    <property name="suffix" value="page"/>
+  </bean>
+
+
+  <!--
+    URL property editor is really handy and spring framework is already providing it!
+    PropertyEditorManager.registerEditor(URL.class, URLEditor.class);
+  -->
+  <bean name="URLEditor" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="staticMethod" value="java.beans.PropertyEditorManager.registerEditor"></property>
+    <property name="arguments">
+      <list>
+        <value>java.net.URL</value>
+        <value>org.springframework.beans.propertyeditors.URLEditor</value>
+      </list>
+    </property>
+  </bean>
+
+</beans>

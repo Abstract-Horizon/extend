@@ -1,0 +1,3 @@
+Artifact: ${artifactId}
+Group: ${groupId}
+Version: ${version}

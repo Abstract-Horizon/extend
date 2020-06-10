@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Introduction</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <!--  macro name="toc" section="1" fromDepth="1" toDepth="3"/ -->
+
+    <section name="Introduction">
+      <p>
+        Extend is simple, highly configurable and light-weight application container
+        based on <a href="links.html#Spring">Spring Framework</a>. Server components are POJOs defined under the Spring Framework
+        that is extended to provide support for services.
+      </p>
+      <p>
+        <a href="links.html#JBoss">JBoss</a> was used as an inspiration for Extend so there are similarities with it.
+      </p>
+      <p>
+        As a pure Java open source project it is an ideally positioned platform for further research of
+        application container functionality within enterprise scale applications.
+      </p>
+    </section>
+  </body>
+</document>

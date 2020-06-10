@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.extend</groupId>
+    <artifactId>extend</artifactId>
+    <version>1.2-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>extend-repository</artifactId>
+
+  <groupId>org.abstracthorizon.extend.repository</groupId>
+
+  <packaging>pom</packaging>
+
+  <name>Extend (Repository)</name>
+
+  <description>
+    This is set of projects dealing with accessing different on line repositories of jar files or other
+    artifacts that can be deployed under extend.
+  </description>
+
+  <modules>
+    <module>extend-maven</module>
+    <!--  <module>extend-scader</module> -->
+  </modules>
+
+</project>

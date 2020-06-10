@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Extend">
+
+  <skin>
+    <groupId>org.abstracthorizon</groupId>
+    <artifactId>abstracthorizon-maven-skin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </skin>
+
+  <publishDate position="bottom" />
+
+  <bannerLeft>
+    <name>Abstract Horizon</name>
+    <src>images/ah-logo-256.png</src>
+    <href>http://www.abstracthorizon.org</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <name>Extend</name>
+    <src>images/extend.png</src>
+    <href>http://extend.abstracthorizon.org</href>
+  </bannerRight>
+
+
+  <body>
+    <menu name="Extend">
+      <item name="About" href="index.html"/>
+      <item name="Quickstart" href="quickstart.html"  collapse="true"/>
+
+      <item name="Documentation" href="documentation.html"  collapse="true">
+        <item name="Intruduction" href="introduction.html"/>
+        <item name="Overview" href="overview.html"/>
+        <item name="Security" href="security.html"/>
+        <item name="Integration" href="extend-integrations.html"/>
+        <item name="Examples" href="examples.html"/>
+        <item name="Links" href="links.html"/>
+      </item>
+      <item name="Forum" href=""/>
+      <item name="JavaDoc" href="api/index.html"/>
+      <item name="Downloads" href="http://download.abstracthorizon.org/extend/"/>
+
+    </menu>
+
+    <!-- menu ref="modules"/ -->
+    <menu ref="reports" collapse="true"/>
+  </body>
+  <poweredBy>
+    <logo name="" href=" " img=" " />
+  </poweredBy>
+</project>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Overview</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <!--  macro name="toc" section="1" fromDepth="1" toDepth="3"/ -->
+
+    <section name="Overview">
+      <p>
+        Extend is composed of a server core and a set of modules.
+      </p>
+
+    <subsection name="Server Core">
+      <p>
+        The server core
+        (<a href="api/org/abstracthorizon/extend/server/Server.html">Server</a>)
+        is started by a bootstrap loader that sets a minimal class loader needed for
+        running of the server. The server core then sets up further class loader with
+        all supplied jars from a lib directory and creates an application context from
+        configuration xml file (which is <a href="links.html#Spring">Spring Framework</a>'s
+        application context file). After that, it registers self with that application
+        context as an singleton bean with the name &quot;Server&quot;.
+      </p>
+      <p>
+        The server then starts deployment of a given URL. If not URL is supplied for
+        server to run from a default location (directory named &quot;server&quot; is used instead).
+        The deployment is done by obtaining &quot;DeploymentManager&quot; bean of
+        <a href="api/org/abstracthorizon/extend/server/deployment/DeploymentManager.html">DeploymentManager</a>
+        type and &quot;DeploymentDirectoryModuleLoader&quot; of
+        <a href="api/org/abstracthorizon/extend/server/deployment/support/DeploymentDirectoryModuleLoader.html">DeploymentDirectoryModuleLoader</a>
+        type. The later is then used for the given URL to be deployed with.
+      </p>
+    </subsection>
+    <subsection name="Modules">
+      <p>
+        The server is organised around
+        <a href="api/org/abstracthorizon/extend/server/deployment/Module.html">Module</a>s.
+        Each module describes an unit that exists within a server's boundaries.
+        The modules are organised in a hierarcy of dependancies.
+      </p>
+      <p>
+        Modules have well defined life cycle:
+      </p>
+      <ul>
+        <li>UNDEFINED - each module starts with that state. Some modules stay forever in it.</li>
+        <li>DEFINED - this state is assigned to the module as soon as it is &quot;created&quot; and important properties assigned to it.</li>
+        <li>WAITING_ON_DEPENDENCY - this is internal state to denote that module is waiting for other modules this module depends on to be CREATED.</li>
+        <li>CREATED - is assigned to the module when it is created and that can happen only if all modules this module depends on are created.
+                      This state is set after a module's <code>create</code> method is succesfully called.
+        </li>
+        <li>DEPLOYED - a state that is assigned when the module is started (deployed). It is set after module's <code>start</code> method is called.</li>
+      </ul>
+
+    </subsection>
+    <subsection name="Module Loaders">
+      <p>
+        Modules are delivered to the system (loaded) by
+        <a href="api/org/abstracthorizon/extend/server/deployment/ModuleLoader.html">ModuleLoader</a>s.
+        When an URL is supplied to the server as a source of a module, all defined module loaders are checked in turn
+        (in the order they are defined in the system) to load that URL. If the module returns <code>true</code>
+        on call of
+        <a href="api/org/abstracthorizon/extend/server/deployment/ModuleLoader.html#canLoad()">canLoad</a>
+        method, delegation of loading of that module is passed to that module loader. A concrete class of
+        loaded module is actually defined by the module loader.
+      </p>
+
+    </subsection>
+    <subsection name="Service Archives">
+      <p>
+        There is one type of modules defined in the core part of the server: Service Archives.
+        Those are modules that are defined in jar archives or directories with &quot;.sar&quot; extensions.
+        For each service archive an application context is created and bean definitions loaded from
+        a file named &quot;service.xml&quot;. All jar files in the root of the archive as well as archive
+        itself are used to form a classpath.
+      </p>
+      <p>
+        The application context has access to all application contexts of the modules this module depends on.
+        Same stands to the class loaders.
+      </p>
+      <p>
+        The service archive extends definition of an XML files adding &quot;&lt;service&gt;&quot; tag bean definition.
+        A presence of that tag denotes that bean is not ordinary bean but a service bean. The service beans can be
+        created, started, stopped and destroyed along with the service module. For each bean these method names
+        can be defined using sub-tags: &quot;&lt;create-method&gt;&quot;, &quot;&lt;start-method&gt;&quot;, &quot;&lt;stop-method&gt;&quot;
+        and &quot;&lt;destroy-method&gt;&quot;. By omitting any of these sub-tags the service archive will use
+        default values &quot;create&quot;, &quot;start&quot;, &quot;stop&quot; and &quot;destroy&quot;. Making
+        tags with empty value (like &quot;&lt;destroy-method /&gt;&quot;) will signal to the service not to call the method.
+        If no argument method doesn't exist then it just wont be called.
+      </p>
+      <p>
+        With this granularity of methods each service has four states in its lifecycle:
+      </p>
+      <ul>
+        <li>instantiated - when bean is created. It is managed by the spring framework.</li>
+        <li>initialised - when bean is fully initialised. It is, too, managed by the spring framework.</li>
+        <li>created - when <code>create</code> method is called. It is managed by the spring application server.</li>
+        <li>started - when <code>start</code> method is called. That is, too, managed by the spring application server.</li>
+      </ul>
+
+    </subsection>
+    <subsection name="Directory Structure">
+      <p>
+        Here is directory structure spring application server operates from:
+      </p>
+<source><![CDATA[
+bin
+  bootstrap.jar - bootstrap jar file
+lib
+  libraries needed for the server to work
+server
+  default
+    config
+      server.xml - the server's application context
+    lib
+      libraries needed for services - they are going to be visible from all modules
+    deploy
+      directory that contains deployable modules (.sar archives or directories, .war, etc...)
+]]></source>
+      <p>
+        It is possible for different server directory to be used instead of the default. It is done
+        by supplying argument -c &lt;name of subdirectory&gt; while starting bootstrap.jar.
+        That directory is the directory the rest of the code is going to be executed from.
+      </p>
+      <p>
+        Also, path of the server directory can be specified as an argument
+        -server followed by URL while starting bootstrap.jar.
+      </p>
+    </subsection>
+    </section>
+  </body>
+</document>

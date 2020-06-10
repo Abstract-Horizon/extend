@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <artifactId>artifact-id</artifactId>
+  <groupId>org.groupid</groupId>
+  <packaging>packaging</packaging>
+  <version>0.1</version>
+
+  <repositories>
+    <repository>
+      <id>abstracthorizon</id>
+      <layout>default</layout>
+      <name>Abstracthorizon.org Repository</name>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <url>http://repository.abstracthorizon.org/maven2/abstracthorizon</url>
+    </repository>
+    <repository>
+      <id>abstracthorizon.snapshot</id>
+      <layout>default</layout>
+      <name>Abstracthorizon.org Snapshot Repository</name>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <url>http://repository.abstracthorizon.org/maven2/abstracthorizon.snapshot</url>
+    </repository>
+  </repositories>
+</project>

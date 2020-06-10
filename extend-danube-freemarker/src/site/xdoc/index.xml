@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Extend (Danube-FreeMarker)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Extend (Danube-FreeMarker)">
+      <p>
+        This is extension of Danube's MVC with FreeMarker as view renderer.
+      </p>
+    </section>
+  </body>
+
+</document>

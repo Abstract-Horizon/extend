@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!--
+   | For more configuration infromation and examples see the Jakarta Log4j
+   | owebsite: http://jakarta.apache.org/log4j
+ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+   <!--
+     Threshold is set to DEBUG so it can be fine tuned for each category
+   -->
+   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+      <param name="Target" value="System.out"/>
+      <param name="Threshold" value="INFO"/>
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/ -->
+         <param name="ConversionPattern" value="[%-5p] %m%n"/>
+      </layout>
+   </appender>
+
+   <!--
+     Switching off all debug messages for apache libraries
+   -->
+   <category name="org.apache">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for spring classes
+   -->
+   <category name="org.springframework">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for abstracthorizon libraries
+   -->
+   <category name="org.abstracthorizon">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for danube
+   -->
+   <category name="org.abstracthorizon.danube">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for spring application server classes
+   -->
+   <category name="org.abstracthorizon.extend.server">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Manager that handles modules. Set on DEBUG if you want more messages/more detailed messages
+   -->
+   <category name="org.abstracthorizon.extend.server.deployment.DeploymentManagerImpl">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Context module.  On DEBUG level contains more details about module cycle.
+   -->
+   <category name="org.abstracthorizon.extend.support.spring.deployment.AbstractApplicationContextModule">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     This class gives too many INFO messages so moved level to WARN to keep log clean
+   -->
+   <category name="org.abstracthorizon.extend.server.deployment.support.DirectoryModule">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     This class gives too many INFO messages so moved level to WARN to keep log clean
+   -->
+   <category name="org.abstracthorizon.extend.support.spring.server.SpringBasedServerApplicationContext">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     This class gives too many INFO messages so moved level to WARN to keep log clean
+   -->
+   <category name="org.abstracthorizon.extend.support.spring.service.ServiceApplicationContextModule">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     On DEBUG level contains more details about module loading.
+   -->
+   <category name="org.abstracthorizon.extend.repository.maven.MavenRepoModuleLoader">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     This class gives too many INFO messages so moved level to WARN to keep log clean
+   -->
+   <category name="org.abstracthorizon.extend.support.spring.deployment.AbstractApplicationContextModule$DeployersDefaultListableBeanFactory">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     This class gives too many DEBUG messages so moved level to INFO to keep log clean
+   -->
+   <category name="org.abstracthorizon.extend.support.spring.deployment.ApplicationContextModuleXmlParser">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     This class gives too many INFO messages so moved level to WARN to keep log clean
+   -->
+   <category name="org.abstracthorizon.extend.server.deployment.danube.DanubeWebApplicationContext">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     To get main Danube debug messages set this class level to DEBUG
+   -->
+   <category name="org.abstracthorizon.danube.http.HTTPConnection">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     To get main Danube debug messages set this class level to DEBUG
+   -->
+   <category name="org.abstracthorizon.danube.http.HTTPConnectionImpl">
+      <priority value="INFO"/>
+   </category>
+
+
+   <root>
+      <appender-ref ref="CONSOLE"/>
+   </root>
+
+</log4j:configuration>

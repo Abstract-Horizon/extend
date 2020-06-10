@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2007 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+
+  <depends-on>org.abstracthorizon.extend.danube:extend-danube:1.2</depends-on>
+
+  <!--
+    Danube web application module loader service.
+  -->
+  <bean name="DanubeWebModuleLoader" class="org.abstracthorizon.extend.server.deployment.danube.DanubeWarModuleLoader">
+    <service>
+      <create-method />
+      <start-method>start</start-method>
+      <stop-method>stop</stop-method>
+      <destroy-method />
+    </service>
+    <property name="extensions">
+      <set>
+        <value>.dar</value>
+        <value>.dar.xml</value>
+      </set>
+    </property>
+  </bean>
+
+  <!--
+    This is socket service listening on port 8080.
+  -->
+  <bean name="danube-server" class="org.abstracthorizon.danube.service.server.MultiThreadServerSocketService">
+    <service />
+    <property name="name" value="Danube"/>
+    <property name="port" value="-8888"/> <!-- This means that preferred port is 8888, but next 20 ports are ok if it is already taken. -->
+    <property name="serverSocketTimeout" value="1000"/>
+    <property name="newSocketTimeout" value="60000"/>
+    <property name="connectionHandler" ref="httpServerConnectionHandler"/>
+  </bean>
+
+  <!--
+    This is SSL socket service listening on port 8443.
+  -->
+  <!--  bean name="danube-ssl-server" class="org.abstracthorizon.danube.service.spring.SSLServerSocketService">
+    <service />
+    <property name="name" value="Danube"/>
+    <property name="port" value="8443"/>
+    <property name="serverSocketTimeout" value="1000"/>
+    <property name="newSocketTimeout" value="60000"/>
+    <property name="connectionHandler" ref="httpServerConnectionHandler"/>
+    <property name="keyStorePassword" value="danubekey"/>
+    <property name="keyStore" value="META-INF/danubessl.jks"/>
+  </bean -->
+
+  <!--
+    This is http server connection handler. This is starting point for Danube web server. After connection is
+    received by danube-server or danube-ssl-server bean it is processed by this bean.
+  -->
+  <bean name="httpServerConnectionHandler" class="org.abstracthorizon.danube.http.HTTPServerConnectionHandler">
+    <property name="connectionHandler" ref="httpServerSelector"/>
+  </bean>
+
+  <bean name="httpServerSelector" class="org.abstracthorizon.danube.http.Selector"/>
+</beans>

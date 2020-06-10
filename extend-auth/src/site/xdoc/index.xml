@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Extend (Authorisation and Authentication)</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Extend (Authorisation and Authentication)">
+      <p>
+        This project adds authorisation and authentication to Extend framework.
+      </p>
+    </section>
+  </body>
+
+</document>

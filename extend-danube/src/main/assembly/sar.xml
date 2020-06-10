@@ -1,0 +1,30 @@
+<assembly>
+  <id>danube.sar</id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <!-- includeDependencies>true</includeDependencies -->
+  <dependencySets>
+    <dependencySet>
+      <includes>
+        <include>org.abstracthorizon.danube:danube-service</include>
+        <include>org.abstracthorizon.danube.http:danube-http</include>
+        <include>org.abstracthorizon.danube:danube-core</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+  <!-- outputDirectory>server/default/deploy/danube.sar</outputDirectory -->
+  <!-- unpack>false</unpack -->
+  <fileSets>
+    <fileSet>
+      <directory>src/extend/config</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+  <files>
+    <file>
+      <source>target/extend-danube-0.4.0.jar</source>
+    </file>
+  </files>
+</assembly>

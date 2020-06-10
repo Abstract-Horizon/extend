@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!--
+   | For more configuration infromation and examples see the Jakarta Log4j
+   | owebsite: http://jakarta.apache.org/log4j
+ -->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+   <!--
+     Threshold is set to DEBUG so it can be fine tuned for each category
+   -->
+   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+      <param name="Target" value="System.out"/>
+      <param name="Threshold" value="INFO"/>
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/ -->
+         <param name="ConversionPattern" value="[%-5p] %m%n"/>
+      </layout>
+   </appender>
+
+   <!--
+     Switching off all debug messages for apache libraries
+   -->
+   <category name="org.apache">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for spring classes
+   -->
+   <category name="org.springframework">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for abstracthorizon libraries
+   -->
+   <category name="org.abstracthorizon">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     Switching off all debug messages for danube
+   -->
+   <category name="org.abstracthorizon.danube">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     To get main Danube debug messages set this class level to DEBUG
+   -->
+   <category name="org.abstracthorizon.danube.http.HTTPConnection">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     To get main Danube debug messages set this class level to DEBUG
+   -->
+   <category name="org.abstracthorizon.danube.http.HTTPConnectionImpl">
+      <priority value="INFO"/>
+   </category>
+
+
+   <!--
+     Levels for extend. Overall level is WARN because we are extending
+     some springframework classes and they use INFO a bit more than needed.
+   -->
+   <category name="org.abstracthorizon.extend">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     Most classes needing to say something use this logger. 
+     INFO level short and shouldn't clog log file with frequent, repeated messages
+     DEBUG level might contain repeating messages.
+   -->
+   <category name="org.abstracthorizon.extend.Info">
+      <priority value="INFO"/>
+   </category>
+
+   <!--
+     This logger contains transport messages. 
+     INFO level short and shouldn't clog log file with frequent, repeated messages
+     DEBUG level might contain repeating messages.
+   -->
+   <category name="org.abstracthorizon.extend.Transport">
+      <priority value="WARN"/>
+   </category>
+
+   <!--
+     This logger is for debug. 
+     ERROR level contains problems, program can continue with, but need to be highlighted.
+     WARN level contains only strange situations that are, anyway, somehow handled but it is prudent for them to be reported.
+     INFO level contains some higher level debugging like entering of some functions...
+     DEBUG level everything that could have thought of.
+   -->
+   <category name="org.abstracthorizon.extend.Debug">
+      <priority value="ERROR"/>
+   </category>
+
+   <root>
+      <appender-ref ref="CONSOLE"/>
+   </root>
+
+</log4j:configuration>

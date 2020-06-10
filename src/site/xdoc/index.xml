@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Abstract Horizon - Extend</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="About">
+      <p>
+        Extend is a simple, highly configurable and light-weight application container
+        based on <a href="http://www.springframework.org">Spring Framework</a>.
+        Server components are POJOs defined under the Spring Framework
+        that is extended to provide support for services.
+      </p>
+    </section>
+
+    <section name="News">
+      <subsection name="10th Feb 2009">
+        <p>
+          Version 0.4.5 is released!
+        </p>
+        <p>
+          Incorporated Danube improvements. Fixed startup and bugs in fetching maven dependencies.
+        </p>
+      </subsection>
+      <subsection name="17th Nov 2007">
+        <p>
+          Version 0.4.1 is released!
+        </p>
+        <p>
+          Added Jetty to Extend's integrations. Now you can choose between Danube, Jetty and Tomcat as your web server.
+        </p>
+      </subsection>
+    </section>
+
+    <section name="Documentation">
+      <p>
+        Documentation for Extend can be found <a href="documentation.html">here</a>.
+      </p>
+      <p>
+        For quickstart with Extend check <a href="quickstart.html">here</a>.
+      </p>
+      <p>
+        API documentation can be found <a href="api/index.html">here</a>.
+      </p>
+    </section>
+
+    <section name="Download">
+      <p>
+        Binary distribution can be found <a href="http://download.abstracthorizon.org/extend/">here</a>.
+      </p>
+      <p>
+        Source can be browsed <a href="http://svn.abstracthorizon.org/extend/">here</a>.
+      </p>
+    </section>
+
+    <section name="Demo">
+      <p>
+        As soon as Extend is stared you can point your web browser to http://localhost:8080/bean-console.
+        Current configuration will enforce SSL (switch to https://) and ask you for username and password:
+      </p>
+      <ul>
+        <li>Username: <b>admin</b></li>
+        <li>Password: <b>admin123</b></li>
+      </ul>
+    </section>
+
+    <section name="Help">
+      <p>
+        Extend is built around simplicity and transparency.
+        If there is a part missing it shouldn't be hard to be added.
+        If you decide to do so and want to share that code with rest of the world we would be more then happy for it to
+        appear within the <a href="http://www.abstracthorizon.org">Abstract Horizon</a> open source project.
+      </p>
+      <p>
+        Every kind of help is more then welcome - from coding, designing to testing (using it) or commenting on it.
+      </p>
+    </section>
+<!--
+    <section name="Contact and Support">
+      <p>
+        Please feel free to send all comments to the <a href="http://www.abstracthorizon.org/forum/index.php?c=8">forum</a> topics.
+      </p>
+    </section>
+-->
+  </body>
+</document>

@@ -1,0 +1,33 @@
+Extend ${version} help.
+
+Usage: java -jar ${jar} [options] [commands]
+
+Options:
+  -b|--bootstrap <moduleURI>           Module URI that will be bootstrapped.
+  -v|--version <global version>        Sets the global version to be used
+                                       with Extend modules.
+  -X|--debug                           Switches debugging output for bootstrap
+                                       process.
+  -d|--directory                       Directory to be used as server's 
+                                       location. Default is current directory.
+  -r|--repository <url>                Adds repositories. Option can be 
+                                       repeated.
+  -h|-?|--help                         This page.
+
+Commands:
+  install [-o|--overwrite]             Creates default file structure for 
+                                       Extend. Command won't overwrite already
+                                       existing files unless overwrite option 
+                                       is given.
+  start                                Starts the server.
+  stop                                 Stops the server.
+  deploy <moduleURI> {<moduleURI}      Deploys given modules. Arguments will 
+                                       be treated as module URIs.
+  undeploy <moduleId> {<moduleId>}     Undeploys module by given module id
+  stop-module <moduleId> {<moduleId>}  Stops already deployed modules. It 
+                                       doesn't undeploy them.
+  start-module <moduleId> {<moduleId>} Starts (stopped) modules.
+  help                                 This page
+  
+Default bootstrap module is: repo:maven:org.abstracthorizon.extend.bootstrap:bootstrap-second-stage:${version}:jar
+Default version is ${version}

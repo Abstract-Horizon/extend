@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Extend Bean Console</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Extend Bean Console">
+      <p>
+        This project introduces Bean Console as defined in Danube project. It defines dar (Danube Archive) with
+        Bean Console as a web application defined for Danube.
+      </p>
+    </section>
+  </body>
+
+</document>

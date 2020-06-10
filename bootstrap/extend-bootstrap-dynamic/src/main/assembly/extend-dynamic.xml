@@ -1,0 +1,57 @@
+<assembly>
+  <id>extend-dynamic</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <dependencySets>
+    <dependencySet>
+      <unpack>true</unpack>
+      <outputFileNameMapping></outputFileNameMapping>
+      <useStrictFiltering>true</useStrictFiltering>
+      <includes>
+        <include>org.abstracthorizon.extend:extend-core</include>
+        <include>org.abstracthorizon.extend.repository:extend-maven</include>
+        <!-- include>org.abstracthorizon.extend.bootstrap:bootstrap-dynamic</include -->
+        <include>org.slf4j:slf4j-api</include>
+        <include>org.slf4j:slf4j-log4j12</include>
+        <include>log4j:log4j</include>
+      </includes>
+      <unpackOptions>
+        <excludes>
+          <exclude>META-INF/**</exclude>
+        </excludes>
+      </unpackOptions>
+    </dependencySet>
+  </dependencySets>
+  <files>
+    <file>
+      <source>../extend-bootstrap-second-stage/src/main/resources/config/log4j.xml</source>
+      <outputDirectory></outputDirectory>
+    </file>
+    <file>
+      <filtered>true</filtered>
+      <source>src/main/assembly/Extend-Version</source>
+      <outputDirectory>META-INF</outputDirectory>
+    </file>
+    <file>
+      <source>src/main/assembly/log4j-license.txt</source>
+      <outputDirectory>META-INF</outputDirectory>
+    </file>
+    <file>
+      <source>src/main/assembly/slf4j-license.txt</source>
+      <outputDirectory>META-INF</outputDirectory>
+    </file>
+    <file>
+      <source>../../epl-v10.html</source>
+      <outputDirectory>META-INF</outputDirectory>
+    </file>
+  </files>
+  <fileSets>
+    <fileSet>
+      <directory>target/classes/</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>

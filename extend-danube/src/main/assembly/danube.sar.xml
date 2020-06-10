@@ -1,0 +1,37 @@
+<assembly>
+  <id>danube.sar</id>
+  <formats>
+    <format>dir</format>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <fileSets>
+    <fileSet>
+      <directory>src/main/extend/config</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+  <files>
+    <file>
+      <source>target/${artifactId}-${version}.jar</source>
+      <destName>${artifactId}-${version}.jar</destName>
+      <outputDirectory></outputDirectory>
+    </file>
+  </files>
+
+  <dependencySets>
+     <dependencySet>
+      <outputFileNameMapping>${artifactId}-${version}.${extension}</outputFileNameMapping>
+      <useStrictFiltering>true</useStrictFiltering>
+      <includes>
+        <include>org.abstracthorizon.danube:danube-core</include>
+        <include>org.abstracthorizon.danube:danube-service</include>
+        <include>org.abstracthorizon.danube:danube-support</include>
+        <include>org.abstracthorizon.danube.http:danube-http</include>
+      </includes>
+      <outputDirectory></outputDirectory>
+      <unpack>false</unpack>
+    </dependencySet>
+  </dependencySets>
+</assembly>

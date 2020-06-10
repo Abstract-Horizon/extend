@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+
+  <!--
+    This bean sets javax.security.auth.login.Configuration to be of SpringAuthConfiguration time for this JVM.
+    Soon that is done other login modules can be added easily to this Configuration.
+  -->
+    <bean name="javax.security.auth.login" class="org.abstracthorizon.extend.server.auth.SpringAuthConfiguration"
+        init-method="init">
+    </bean>
+</beans>

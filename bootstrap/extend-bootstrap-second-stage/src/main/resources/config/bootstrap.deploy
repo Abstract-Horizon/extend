@@ -1,0 +1,5 @@
+repo:maven:org.abstracthorizon.extend.support:extend-server-control-server:${version}:sar.xml
+repo:maven:org.abstracthorizon.extend.danube:extend-danube:${version}:sar.xml
+repo:maven:org.abstracthorizon.extend:extend-bean-console:${version}:dar.xml
+#repo:maven:org.abstracthorizon.extend.jetty:extend-jetty:${version}:sar.xml
+#repo:maven:org.abstracthorizon.extend.tomcat:extend-tomcat:${version}:sar.xml

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2007 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+
+  <depends-on>org.abstracthorizon.extend.tomcat:extend-tomcat:1.2</depends-on>
+
+  <!--
+    Tomcat war archive module loader service.
+  -->
+  <bean name="TomcatWarModuleLoader" class="org.abstracthorizon.extend.server.deployment.tomcat.TomcatWarModuleLoader">
+    <service>
+    <create-method />
+    <start-method>start</start-method>
+    <stop-method>stop</stop-method>
+    <destroy-method />
+    </service>
+    <property name="extensions">
+      <set>
+        <value>.war</value>
+      </set>
+    </property>
+  </bean>
+
+  <!--
+    Embedded tomcat service. This bean starts tomcat.
+  -->
+  <bean name="tomcat" class="org.apache.catalina.startup.Embedded">
+    <service>
+    <create-method />
+    <start-method>start</start-method>
+    <stop-method>stop</stop-method>
+    <destroy-method />
+    </service>
+
+    <property name="name" value="Tomcat"/>
+    <property name="catalinaHome" value="deploy/tomcat.sar"/>
+  </bean>
+
+  <!--
+    Tomcat configuration: This is Tomcat engine
+  -->
+  <bean name="tomcat.engine" class="org.apache.catalina.core.StandardEngine"/>
+
+  <!--
+    Tomcat configuration: This is Tomcat host definition
+  -->
+  <bean name="tomcat.host" class="org.apache.catalina.core.StandardHost" >
+    <property name="appBase" value="deploy/tomcat.sar/webapps"/>
+    <property name="name" value="localhost"/>
+  </bean>
+
+  <!--
+    This is Spring framework's way of setting host to the engine invoking addChild method.
+  -->
+  <bean name="tomcat.engine.add.host" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="tomcat.engine"/>
+    <property name="targetMethod" value="addChild"/>
+    <property name="arguments"><list><ref bean="tomcat.host"/></list></property>
+  </bean>
+
+  <!--
+    This is Spring framework's way of setting engine to the Tomcat instance invoking addEngine method.
+  -->
+  <bean name="tomcat.add.engine" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="tomcat"/>
+    <property name="targetMethod" value="addEngine"/>
+    <property name="arguments"><list><ref bean="tomcat.engine"/></list></property>
+  </bean>
+
+  <!--
+    This is Tomcat HTTP connector listening on the port 8090
+  -->
+  <bean name="tomcat.connector" class="org.apache.catalina.connector.Connector">
+    <property name="port" value="8090"/>
+  </bean>
+
+  <!--
+    This is Spring framework's way of setting connector to the Tomcat instance invoking addEngine method.
+  -->
+  <bean name="tomcat.add.connector" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="tomcat"/>
+    <property name="targetMethod" value="addConnector"/>
+    <property name="arguments"><list><ref bean="tomcat.connector"/></list></property>
+  </bean>
+
+<!--
+    This is an example how web application can be added using only spring framework
+-->
+<!--
+  <bean name="tomcat.host.add.context" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <property name="targetObject" ref="tomcat.host"/>
+    <property name="targetMethod" value="addChild"/>
+    <property name="arguments">
+      <list>
+        <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+          <property name="targetObject" ref="tomcat"/>
+          <property name="targetMethod" value="createContext"/>
+          <property name="arguments">
+            <list>
+              <! - - here comes the context path - - >
+              <value>/app</value>
+              <! - - and here directory of the web application - - >
+              <value>/home/joe/webapp</value>
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+-->
+
+</beans>

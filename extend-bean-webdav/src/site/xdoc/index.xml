@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+
+  <properties>
+    <author email="daniel.sendula@abstracthorizon.org">Daniel Sendula</author>
+    <title>Extend Bean WebDAV</title>
+  </properties>
+
+  <meta name="keyword" content="danube java"/>
+
+  <body>
+    <section name="Extend Bean WebDAV">
+      <p>
+        This project introduces Bean Console, WebDAV interface as defined in Danube project. It defines dar (Danube Archive) with
+        Bean Console as a WebDAV application defined for Danube's WebDAV.
+      </p>
+    </section>
+  </body>
+
+</document>

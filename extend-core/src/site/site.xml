@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Extend">
+
+  <bannerLeft>
+    <name></name>
+    <src>../images/ah.png</src>
+    <href>http://www.abstracthorizon.org</href>
+  </bannerLeft>
+
+  <bannerRight>
+    <name>Extend</name>
+    <src>../images/extend.png</src>
+    <href>http://extend.abstracthorizon.org</href>
+  </bannerRight>
+
+  <body>
+    <menu ref="parent"/>
+    <menu ref="modules"/>
+    <menu ref="reports"/>
+  </body>
+</project>

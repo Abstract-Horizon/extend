@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Integration</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Integration">
+
+      <p>
+        Extend is easily expanded using a service modules. The service modules always have
+        access to all modules they depend on and access to the core server's application context.
+      </p>
+      <subsection name="Danube">
+        <p>
+          Integration with <a href="links.html#Danube">Danube</a> is done through several service archives:
+          main, web server one, danube-velocity, danube-freemarker and danube-spring webflow modules.
+          The Danube archive sets up an web server
+          while others are integrations of <a href="links.html#Danube">Danube</a> with respectively
+          <a href="links.html#Velocity">Velocity</a>, <a href="links.html#FreeMarker">FreeMarker</a>
+          and <a href="links.html#Spring-Webflow">Spring Webflow</a> providing
+          glue code, spring application server code (for correcting paths - for paths
+          to appear archive centric), appropriate third party libraries and configurations.
+        </p>
+        <p>
+          The integration provides module and module loader implementations.
+          For an archive or a directory to be considered to be loaded by this integration it has
+          to have suffix &quot;.war&quot; and must have file named &quot;web-service.xml&quot;
+          in the root of the archive. The module provides an application context read from
+          the &quot;web-service.xml&quot; file. Unlike in the service archive here no beans are
+          treated as services. Aside that, class loading and application context enclosing are the same.
+        </p>
+        <p>
+          Soon the module is deployed and started an bean named &quot;web-application&quot; of
+          <a href="http://danube.abstracthorizon.org/api/org/abstracthorizon/danube/connection/ConnectionHandler">ConnectionHandler</a>
+          type is obtained and passed to a
+          <a href="http://danube.abstracthorizon.org/api/org/abstracthorizon/danube/http/matcher/Prefix">Prefix</a>,
+          using module's name as first part of the context path, to the main selector of Danube.
+          If special tag &lt;context-path&gt; is added at the beginning of the beans section of the xml file then that
+          string is going to be used instead.
+        </p>
+      </subsection>
+
+      <subsection name="Jetty">
+        <p>
+          <a href="links.html#Jetty">Jetty</a> web server is added in a similar way as Danube - as
+          an service archive defining module loader that knows how to load an archive (or a directory)
+          that ends with &quot;.war&quot; and has &quot;WEB-INF/web.xml&quot; file in it. This later
+          one is for J2EE web applications to be distinguished from Danube's web applications.
+        </p>
+        <p>
+          A J2EE web application module is deployed under context path of module's name, but
+          if application context file &quot;WEB-INF/web-application.xml&quot; exists and special
+          tag &lt;context-path&gt; is added at the beginning of the beans section then that
+          string is used instead.
+        </p>
+        <p>
+          Note: Default port for Jetty undex extend is 8100 but it can be easily changed inside of
+          <code>service.xml</code> file in <code>jetty.sar</code> folder.
+        </p>
+      </subsection>
+      
+      <subsection name="Tomcat">
+        <p>
+          <a href="links.html#Tomcat">Tomcat</a> web server is added in a similar way as Jetty - as
+          an service archive defining module loader that knows how to load an archive (or a directory)
+          that ends with &quot;.war&quot; and has &quot;WEB-INF/web.xml&quot; file in it. This later
+          one is for J2EE web applications to be distinguished from Danube's web applications.
+        </p>
+        <p>
+          A J2EE web application module is deployed under context path of module's name, but
+          if application context file &quot;WEB-INF/web-application.xml&quot; exists and special
+          tag &lt;context-path&gt; is added at the beginning of the beans section then that
+          string is used instead.
+        </p>
+        <p>
+          Note: Default port for Jetty undex extend is 8090 but it can be easily changed inside of
+          <code>service.xml</code> file in <code>tomcat.sar</code> folder.
+        </p>
+      </subsection>
+
+      <subsection name="Other">
+        <p>
+          There are other technologies that will benefit of being adopted to run under Extend.
+          Spring Framework's simplicity and power of configuration is the major benefit any
+          component can have from being adopted.
+        </p>
+        <p>
+          Adding new elements to the spring application server can be done by simply adoptoing
+          <a href="api/org/abstracthorizon/extend/server/deployment/Module.html">Module</a>
+          and if needed
+          <a href="api/org/abstracthorizon/extend/server/deployment/ModuleLoader.html">ModuleLoader</a>
+          interfaces. Using service archives, the spring framework for configuration and
+          the server for handing life cycle are tools for adopting independent pieces of software to work
+          with Extend.
+        </p>
+      </subsection>
+    </section>
+  </body>
+</document>

@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.extend</groupId>
+    <artifactId>extend</artifactId>
+    <version>1.2-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>extend-bean-console</artifactId>
+
+  <packaging>jar</packaging>
+
+  <name>Extend Bean Console</name>
+
+  <description>
+    This project introduces Bean Console as defined in Danube project. It defines dar (Danube Archive) with
+    Bean Console as a web application defined for Danube.
+  </description>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.extend</groupId>
+      <artifactId>extend-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.extra</groupId>
+      <artifactId>danube-bean-console</artifactId>
+      <version>${danube.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.danube.webdav</groupId>
+      <artifactId>danube-webdav-spring</artifactId>
+      <version>${danube.version}</version>
+    </dependency>
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.2</version>
+        <executions>
+          <execution>
+            <id>sar.xml</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>src/main/extend/web-application.xml</file>
+                  <type>dar.xml</type>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2007 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+
+  <depends-on>org.abstracthorizon.extend.tomcat:extend-tomcat-full:1.2</depends-on>
+
+  <!--
+    Tomcat war archive module loader service.
+  -->
+  <bean name="FullTomcatWarModuleLoader" class="org.abstracthorizon.extend.server.deployment.tomcat.FullTomcatWarModuleLoader">
+    <service>
+    <create-method />
+    <start-method>start</start-method>
+    <stop-method>stop</stop-method>
+    <destroy-method />
+    </service>
+    <property name="extensions">
+      <set>
+        <value>.war</value>
+      </set>
+    </property>
+    <property name="tomcatController" ref="FullTomcat"/>
+  </bean>
+
+  <!--
+    Embedded tomcat service. This bean starts tomcat.
+  -->
+  <bean name="FullTomcat" class="org.abstracthorizon.extend.server.deployment.tomcat.FullTomcatController">
+    <service>
+    <create-method>create</create-method>
+    <start-method>start</start-method>
+    <stop-method>stop</stop-method>
+    <destroy-method />
+    </service>
+
+    <!-- property name="name" value="Tomcat"/ -->
+    <property name="tomcatArtifact" value="repo:maven:org.apache:apache-tomcat:6.0.30:zip:test" />
+    <property name="catalinaHome" value="apache-tomcat-6.0.30"/>
+    <property name="deploymentManager" ref="DeploymentManager"/>
+    
+    <!-- 
+    <property name="restartTomcatOnDeploy" value="true"/>
+    <property name="controlTomcatStop" value="true"/>
+    -->
+     
+    <property name="managerUser" value="manager-user"/>
+    <property name="managerPassword" value="123specialmanageruserpassword$%!"/>
+  </bean>
+
+
+</beans>

@@ -1,0 +1,71 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <parent>
+    <groupId>org.abstracthorizon.extend.bootstrap</groupId>
+    <artifactId>bootstrap</artifactId>
+    <version>1.2-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>extend-bootstrap-second-stage</artifactId>
+
+  <packaging>jar</packaging>
+
+  <name>Extend (Bootstrap - second stage)</name>
+
+  <description>
+    This project implements second stage in dynamic bootstrapping.
+  </description>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.abstracthorizon.extend</groupId>
+      <artifactId>extend-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.extend.repository</groupId>
+      <artifactId>extend-maven</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.abstracthorizon.extend.support</groupId>
+      <artifactId>extend-spring</artifactId>
+    </dependency>
+
+
+    <!-- Test deps -->
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>org.abstracthorizon.extend.server.dynamic.secondstage.Bootstrap</mainClass>
+              <addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

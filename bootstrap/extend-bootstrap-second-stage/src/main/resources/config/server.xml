@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+ * Copyright (c) 2005-2006 Creative Sphere Limited.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the LGPL licence
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/copyleft/lesser.html
+ *
+ * Contributors:
+ *
+ *   Creative Sphere - initial API and implementation
+-->
+<beans>
+
+  <!--
+    This is DeploymentManager. All Modules are registered with this bean. All ModuleLoaders are registered with this bean.
+    When, for instance, DeploymentDirectoryModule detects a change (or at initialisation) all module loaders from this
+    bean a queried until one returns it can load changed resource (or newly added or each at initialisation) and produced
+    module is then registered back with this bean.
+  -->
+  <bean name="DeploymentManager" class="org.abstracthorizon.extend.server.deployment.DeploymentManagerImpl">
+    <property name="moduleLoaders">
+      <set>
+        <ref bean="DirectoryModuleLoader"/>
+      </set>
+    </property>
+  </bean>
+
+  <!--
+    This is service archive module loader. In plain terms this loader accepts directories and archives with
+    .sar extension and loads them.
+  -->
+  <bean name="ServiceModuleLoader" class="org.abstracthorizon.extend.support.spring.service.ServiceModuleLoader" init-method="start">
+    <property name="deploymentManager"><ref bean="DeploymentManager"/></property>
+    <property name="redeployURLScanner" ref="RedeployURLScanner"/>
+    <property name="extensions">
+      <set>
+        <value>.sar</value>
+        <value>.sar.xml</value>
+      </set>
+    </property>
+  </bean>
+
+  <!--
+    This is service archive module loader. In plain terms this loader accepts directories and archives with
+    .sar extension and loads them.
+  -->
+  <bean name="JarModuleLoader" class="org.abstracthorizon.extend.server.deployment.support.JarModuleLoader" init-method="start">
+    <property name="deploymentManager"><ref bean="DeploymentManager"/></property>
+    <property name="extensions">
+      <set>
+        <value>.jar</value>
+      </set>
+    </property>
+  </bean>
+
+  <!--
+    Maven style repository module loader service.
+  -->
+  <bean name="RepositoryModuleLoader" abstract="true">
+    <property name="deploymentManager"><ref bean="DeploymentManager"/></property>
+    <!--
+    <property name="repositories">
+      <map>
+        <entry key="central">
+          <bean class="org.abstracthorizon.extend.repository.maven.pom.RepositoryDefinition">
+            <constructor-arg value="central"/>
+            <constructor-arg value="http://repo1.maven.org/maven2"/>
+            <constructor-arg value="true"/>
+            <constructor-arg value="false"/>
+          </bean>
+        </entry>
+        <entry key="abstracthorizon">
+          <bean class="org.abstracthorizon.extend.repository.maven.pom.RepositoryDefinition">
+            <constructor-arg value="abstracthorizon"/>
+            <constructor-arg value="http://repository.abstracthorizon.org/maven2/abstracthorizon"/>
+            <constructor-arg value="true"/>
+            <constructor-arg value="false"/>
+          </bean>
+        </entry>
+        <entry key="abstracthorizon.snapshot">
+          <bean class="org.abstracthorizon.extend.repository.maven.pom.RepositoryDefinition">
+            <constructor-arg value="abstracthorizon.snapshot"/>
+            <constructor-arg value="http://repository.abstracthorizon.org/maven2/abstracthorizon.snapshot"/>
+            <constructor-arg value="false"/>
+            <constructor-arg value="true"/>
+          </bean>
+        </entry>
+      </map>
+    </property>
+ 	-->
+   </bean>
+
+  <bean name="ParallelRepositoryModuleLoader" parent="RepositoryModuleLoader" class="org.abstracthorizon.extend.repository.maven.ParallelRepositoryModuleLoader"/>
+  <bean name="SerialRepositoryModuleLoader" parent="RepositoryModuleLoader" class="org.abstracthorizon.extend.repository.maven.MavenRepoModuleLoader"/>
+
+  <!--
+    Bulk deploy - when one file contains list of URIs to be deployed upon reading that file.
+  -->
+  <bean name="BulkDeploy" class="org.abstracthorizon.extend.server.deployment.support.BulkDeploy" init-method="start">
+    <property name="deploymentManager"><ref bean="DeploymentManager"/></property>
+    <property name="extensions">
+      <set>
+        <value>.deploy</value>
+      </set>
+    </property>
+  </bean>
+
+  <!--
+    This is definition for directory module loader. This module loader makes plain directories available as
+    Modules. Directory name must be without extensions
+  -->
+  <bean name="DirectoryModuleLoader" class="org.abstracthorizon.extend.server.deployment.support.DirectoryModuleLoader"/>
+
+  <!--
+    Convenient definition of DeploymentDirectoryModule. This definition is used instead of a factory (?!). Spring
+    sets up scheduler and deploymentManger properties of each newly created DeploymentDirectoryModule instance
+    (see 'singleton="false"' attribute).
+  -->
+  <bean name="DeploymentDirectoryModule" class="org.abstracthorizon.extend.server.deployment.support.DeploymentDirectoryModule" singleton="false">
+    <property name="scheduler" ref="KernelScheduler"/>
+    <property name="deploymentManager" ref="DeploymentManager"/>
+    <property name="moduleId"><bean class="org.abstracthorizon.extend.server.deployment.ModuleId"><constructor-arg value="system:DefaultDeploymentDirectory:current:internal"/></bean></property>
+    <property name="location" value="server-location:deploy:"/>
+  </bean>
+
+  <!--
+    This is redeployment URL scanner class. It checks for changes in directory deploying newly added archives (directories)
+    and removing removed ones.
+  -->
+  <bean name="RedeployURLScanner" class="org.abstracthorizon.extend.server.deployment.support.RedeployURLScanner">
+    <property name="deploymentManager" ref="DeploymentManager"/>
+    <property name="scheduler" ref="KernelScheduler"/>
+  </bean>
+
+  <!--
+    Scheduler used for DeploymentDirectoryModule for rescanning given URL (directory).
+  -->
+  <bean name="KernelScheduler" class="org.abstracthorizon.extend.server.support.KernelScheduler" destroy-method="destroy" />
+
+</beans>

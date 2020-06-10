@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Examples</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Examples">
+      <subsection name="Bean Console">
+        <p>
+          The bean console is simple web application for <a href="links.html#Danube">Danube</a> web
+          application server that allows access to all beans defined in the root application
+          context. It allows bean properties to be displayed using available
+          property editors, read-write properties to be altered and public method to be called.
+        </p>
+        <p>
+          The bean console is installed on &quot;/bean-console&quot; context path of local web
+          server running on port 8080
+          (&quot;http://localhost:8080/bean-console&quot;). It is implemented
+          using <a href="links.html#Danube">Danube</a>
+          and <a href="links.html#FreeMarker">FreeMarker</a>. Source code is supplied.
+        </p>
+      </subsection>
+    </section>
+
+  </body>
+</document>

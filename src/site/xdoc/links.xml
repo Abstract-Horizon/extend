@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Links</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Links">
+      <ul>
+        <li><a name="Danube"></a><a href="http://danube.abstracthorizon.org/" target="new_page">Danube</a></li>
+        <li><a name="FreeMarker"></a><a href="http://freemarker.sourceforge.net" target="new_page">FreeMarker</a></li>
+        <li><a name="Java"></a><a href="http://java.sun.com" target="new_page">Java</a></li>
+        <li><a name="JBoss"></a><a href="http://www.jboss.org" target="new_page">JBoss</a></li>
+        <li><a name="JBossMicrocontainer"></a><a href="http://www.jboss.org/products/jbossmc" target="new_page">JBoss Microcontainer</a></li>
+        <li><a name="Spring"></a><a href="http://www.springframework.org" target="new_page">Spring</a></li>
+        <li><a name="Spring-Webflow"></a><a href="http://opensource2.atlassion.com/confluence/spring/display/WEBFLOW/Home" target="new_page">Spring-Webflow</a></li>
+        <li><a name="Tomcat"></a><a href="http://tomcat.apache.org" target="new_page">Tomcat</a></li>
+        <li><a name="Jetty"></a><a href="http://jetty.mortbay.org" target="new_page">Jetty</a></li>
+        <li><a name="Velocity"></a><a href="http://jakarta.apache.org/velocity" target="new_page">Velocity Template Engine</a></li>
+        <li><a name="WebWork"></a><a href="http://www.opensymphony.com/webwork" target="new_page">WebWork</a></li>
+      </ul>
+    </section>
+
+  </body>
+</document>

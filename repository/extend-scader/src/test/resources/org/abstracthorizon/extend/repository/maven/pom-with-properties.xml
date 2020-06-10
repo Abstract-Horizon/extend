@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <artifactId>artifact-id</artifactId>
+  <groupId>org.groupid</groupId>
+  <packaging>packaging</packaging>
+  <version>0.1</version>
+
+  <properties>
+    <group>groupId1</group>
+    <artifact>artifactId1</artifact>
+    <version>version1</version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.${group}</groupId>
+      <artifactId>${artifact}</artifactId>
+      <version>${version}</version>
+    </dependency>
+  </dependencies>
+</project>

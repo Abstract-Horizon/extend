@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Introduction</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <!--  macro name="toc" section="1" fromDepth="1" toDepth="3"/ -->
+
+    <section name="Introduction">
+
+      <a name="intruduction"></a>
+      <h2>Intruduction</h2>
+      <p>
+        Spring Application Server is simple, highly configurable and light-weight application container
+        based on <a href="#Spring">Spring Framework</a>. Server components are POJOs defined under the Spring Framework
+        that is extended to provide support for services.
+      </p>
+      <p>
+        <a href="#JBoss">JBoss</a> was used as an inspiration for Spring Application Server so there are similarities with
+        it.
+      </p>
+      <p>
+        As a pure Java open source project it is an ideally positioned platform for further research of
+        application container functionality within enterprise scale applications.
+      </p>
+    </div>
+
+    <div>
+      <a name="overview"></a>
+      <h2>Overview</h2>
+      <p>
+        Spring Application Server is composed of a server core and a set of modules.
+      </p>
+
+      <a name="overview.core"></a><h3>Server Core</h3>
+      <p>
+        The server core
+        (<a href="api/org/abstracthorizon/spring/server/Server.html">Server</a>)
+        is started by a bootstrap loader that sets a minimal class loader needed for
+        running of the server. The server core then sets up further class loader with all supplied jars from a lib directory and
+        creates an application context from configuration xml file (which is <a href="Spring">Spring Framework</a>'s application context file).
+        After that, it registers self with that application context as an singleton bean with the name &quot;Server&quot;.
+      </p>
+      <p>
+        The server then starts deployment of a given URL. If not URL is supplied for server to run from a default location (directory
+        named &quot;server&quot; is used instead. The deployment is done by
+        obtaining &quot;DeploymentManager&quot; bean of
+        <a href="api/org/abstracthorizon/spring/server/deployment/DeploymentManager.html">DeploymentManager</a>
+        type and &quot;DeploymentDirectoryModuleLoader&quot; of
+        <a href="api/org/abstracthorizon/spring/server/deployment/support/DeploymentDirectoryModuleLoader.html">DeploymentDirectoryModuleLoader</a>
+        type. The later is then used for the given URL to be deployed with.
+      </p>
+      <a name="overview.modules"></a><h3>Modules</h3>
+      <p>
+        The server is organised around
+        <a href="api/org/abstracthorizon/spring/server/deployment/Module.html">Module</a>s.
+        Each module describes an unit that exists within a server's boundaries.
+        The modules are organised in a hierarcy of dependancies.
+      </p>
+      <p>
+        Modules have well defined life cycle:
+        <ul>
+          <li>UNDEFINED - each module starts with that state. Some modules stay forever in it.</li>
+          <li>DEFINED - this state is assigned to the module as soon as it is &quot;created&quot; and important properties assigned to it.</li>
+          <li>WAITING_ON_DEPENDENCY - this is internal state to denote that module is waiting for other modules this module depends on to be CREATED.</li>
+          <li>CREATED - is assigned to the module when it is created and that can happen only if all modules this module depends on are created.
+                        This state is set after a module's <code>create</code> method is succesfully called.
+          </li>
+          <li>DEPLOYED - a state that is assigned when the module is started (deployed). It is set after module's <code>start</code> method is called.</li>
+        </ul>
+      </p>
+      <br clear="all" />
+
+      <a name="overview.module.loaders"></a><h3>Module Loaders</h3>
+      <p>
+        Modules are delivered to the system (loaded) by
+        <a href="api/org/abstracthorizon/spring/server/deployment/ModuleLoader.html">ModuleLoader</a>s.
+        When an URL is supplied to the server as a source of a module, all defined module loaders are checked in turn
+        (in the order they are defined in the system) to load that URL. If the module returns <code>true</code>
+        on call of
+        <a href="api/org/abstracthorizon/spring/server/deployment/ModuleLoader.html#canLoad()">canLoad</a>
+        method, delegation of loading of that module is passed to that module loader. A concrete class of
+        loaded module is actually defined by the module loader.
+      </p>
+      <br clear="all" />
+
+      <a name="overview.service.archives"></a><h3>Service Archives</h3>
+      <p>
+        There is one type of modules defined in the core part of the server: Service Archives.
+        Those are modules that are defined in jar archives or directories with &quot;.sar&quot; extensions.
+        For each service archive an application context is created and bean definitions loaded from
+        a file named &quot;service.xml&quot;. All jar files in the root of the archive as well as archive
+        itself are used to form a classpath.
+      </p>
+      <p>
+        The application context has access to all application contexts of the modules this module depends on.
+        Same stands to the class loaders.
+      </p>
+      <p>
+        The service archive extends definition of an XML files adding &quot;&ltservice&gt;&quot; tag bean definition.
+        A presence of that tag denotes that bean is not ordinary bean but a service bean. The service beans can be
+        created, started, stopped and destroyed along with the service module. For each bean these method names
+        can be defined using sub-tags: &quot;&lt;create-method&gt;&quot;, &quot;&lt;start-method&gt;&quot;, &quot;&lt;stop-method&gt;&quot;
+        and &quot;&lt;destroy-method&gt;&quot;. By omitting any of these sub-tags the service archive will use
+        default values &quot;create&quot;, &quot;start&quot;, &quot;stop&quot; and &quot;destroy&quot;. Making
+        tags with empty value (like &quot;&lt;destroy-method /&gt;&quot;) will signal to the service not to call the method.
+        If no argument method doesn't exist then it just wont be called.
+      </p>
+      <p>
+        With this granularity of methods each service has four states in its lifecycle:
+        <ul>
+          <li>instantiated - when bean is created. It is managed by the spring framework.</li>
+          <li>initialised - when bean is fully initialised. It is, too, managed by the spring framework.</li>
+          <li>created - when <code>create</code> method is called. It is managed by the spring application server.</li>
+          <li>started - when <code>start</code> method is called. That is, too, managed by the spring application server.</li>
+        </ul>
+      </p>
+      <br clear="all" />
+
+      <a name="overview.directory.structure"></a><h3>Directory Structure</h3>
+      <p>
+        Here is directory structure spring application server operates from:
+      </p>
+      <p>
+<pre>
+      <root>
+        bin
+          bootstrap.jar - bootstrap jar file
+        lib
+          libraries needed for the server to work
+        server
+          default
+            config
+              server.xml - the server's application context
+            lib
+              libraries needed for services - they are going to be visible from all modules
+            deploy
+              directory that contains deployable modules (.sar archives or directories, .war, etc...)
+</pre>
+      </p>
+      <p>
+        It is possible for different server directory to be used instead of the default. It is done
+        by supplying argument -c &lt;name of subdirectory&gt; while starting bootstrap.jar.
+        That directory is the directory the rest of the code is going to be executed from.
+      </p>
+      <p>
+        Also, path of the server directory can be specified as an argument
+        -server followed by URL while starting bootstrap.jar.
+      </p>
+    </div>
+
+    <div>
+      <a name="security"></a>
+      <h2>Security</h2>
+
+      <p>
+        Spring application server provides simple way of defining security configuration. Bean called
+        <a href="api/org/abstracthorizon/spring/server/auth/SpringAuthConfiguration.html">SpringAuthConfiguration</a>
+        hooks to system configuration (<code>javax.security.auth.login.Configuration</code>) and allows
+        login modules to be specified under login contexts.
+      </p>
+
+      <p>
+        At the moment there is only one login module implementation supplied:
+        <a href="api/org/abstracthorizon/spring/server/auth/jaas/keystore/KeyStoreLoginModule.html">KeyStoreLoginModule</a> and
+        <a href="api/org/abstracthorizon/spring/server/auth/jaas/keystore/KeyStoreModuleService.html">KeyStoreModuleService</a> service
+        to be used to configure
+        <a href="api/org/abstracthorizon/spring/server/auth/jaas/keystore/KeyStoreLoginModule.html">KeyStoreLoginModule</a>.
+      </p>
+      <p>
+        Service <a href="api/org/abstracthorizon/spring/server/auth/jaas/keystore/KeyStoreModuleService.html">KeyStoreModuleService</a>
+        has following attributes:
+      </p>
+      <ul>
+        <li><code>loginContext</code> - login context name</li>
+        <li><code>configuration</code> - configuration bean (usually just reference to &quot;javax.security.auth.login&quot;)</li>
+        <li><code>keyStore</code> - name of resource of key store</li>
+        <li><code>keyStorePassword</code> - password of given keystore</li>
+        <li><code>keyStoreType</code> - type of key store (optional)</li>
+        <li><code>keyStoreProvider</code> - key store provider (optional)</li>
+        <li><code>controlFlag</code> - control flag - one of &quot;required&quot;, &quot;requisite&quot;, &quot;sufficient&quot; or &quot;optional&quot;. Defaulted to &quot;required&quot;.</li>
+      </ul>
+      <p>
+        For example of a login module definition see bean-console's <code>web-application.xml</code>.
+      </p>
+
+    </div>
+
+    <div>
+      <a name="integration"></a>
+      <h2>Integration</h2>
+
+      <p>
+        The spring application server is easily expanded using a service modules. The service modules always have
+        access to all modules they depend on and access to the core server's application context.
+      </p>
+      <div>
+        <a name="integration.danube"></a>
+        <h3>Danube</h3>
+        <p>
+          Integration with <a href="#Danube">Danube</a> is done through several service archives:
+          main, web server one, danube-velocity, danube-freemarker and danube-spring webflow modules. The Danube archive sets up an web server
+          while others are integrations of <a href="#Danube">Danube</a> with respectively
+          <a href="#Velocity">Velocity</a>, <a href="#FreeMarker">FreeMarker</a> and <a href="#Spring-Webflow">Spring Webflow</a> providing
+          glue code, spring application server code (for correcting paths - for paths to appear archive centric),
+          appropriate third party libraries and configurations.
+        </p>
+        <p>
+          The integration provides module and module loader implementations. For an archive or a directory to be considered to be
+          loaded by this integration it has to have suffix &quot;.war&quot; and must have file named &quot;web-service.xml&quot;
+          in the root of the archive. The module provides an application context read from the &quot;web-service.xml&quot; file.
+          Unlike in the service archive here no beans are treated as services. Aside that, class loading and application context
+          enclosing are the same.
+        </p>
+        <p>
+          Soon the module is deployed and started an bean named &quot;web-application&quot; of
+          <a href="http://www.abstracthorizon.org/danube/api/org/abstracthorizon/danube/connection/ConnectionHandler">ConnectionHandler</a>
+          type is obtained and passed to a
+          <a href="http://www.abstracthorizon.org/danube/api/org/abstracthorizon/danube/http/matcher/Prefix">Prefix</a>,
+          using module's name as first part of the context path, to the main selector of Danube.
+          If special tag &lt;context-path&gt; is added at the beginning of the beans section of the xml file then that
+          string is going to be used instead.
+        </p>
+      </div>
+
+      <div>
+        <a name="integration.jetty"></a>
+        <h3>Jetty</h3>
+        <p>
+          <a href="#Tetty">Jetty</a> web server is added in a similar way as Danube - as an service archive defining module loader
+          that knows how to load an archive (or a directory) that ends with &quot;.war&quot; and has &quot;WEB-INF/web.xml&quot; file
+          in it. This later one is for J2EE web applications to be distinguished from Danube's web applications.
+        </p>
+        <p>
+          A J2EE web application module is deployed under context path of module's name, but
+          if application context file &quot;WEB-INF/web-application.xml&quot; exists and special tag &lt;context-path&gt; is added at
+          the beginning of the beans section then that string is used instead.
+        </p>
+      </div>
+
+      <div>
+        <a name="integration.tomcat"></a>
+        <h3>Tomcat</h3>
+        <p>
+          <a href="#Tomcat">Tomcat</a> web server is added in a similar way as Danube - as an service archive defining module loader
+          that knows how to load an archive (or a directory) that ends with &quot;.war&quot; and has &quot;WEB-INF/web.xml&quot; file
+          in it. This later one is for J2EE web applications to be distinguished from Danube's web applications.
+        </p>
+        <p>
+          A J2EE web application module is deployed under context path of module's name, but
+          if application context file &quot;WEB-INF/web-application.xml&quot; exists and special tag &lt;context-path&gt; is added at
+          the beginning of the beans section then that string is used instead.
+        </p>
+      </div>
+
+      <div>
+        <a name="integration.other"></a>
+        <h3>Other</h3>
+        <p>
+          There are other technologies that will benefit of being adopted to run under the Spring Application Server.
+          Spring Framework's simplicity and power of configuration is the major benefit any component can have from being adopted.
+        </p>
+        <p>
+          Adding new elements to the spring application server can be done by simply adoptoing
+          <a href="api/org/abstracthorizon/spring/server/deployment/Module.html">Module</a>
+          and if needed
+          <a href="api/org/abstracthorizon/spring/server/deployment/ModuleLoader.html">ModuleLoader</a>
+          interfaces. Using service archives, the spring framework for configuration and
+          the server for handing life cycle are tools for adopting independent pieces of software to work
+          with the Spring Application Server.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <a name="examples"></a>
+      <h2>Examples</h2>
+      <div>
+        <a name="examples.bean-console"></a>
+        <h3>Bean Console</h3>
+        <p>
+          The bean console is simple web application for <a href="#Danube">Danube</a> web application server that allows access to
+          all beans defined in the root application context. It allows bean properties to be displayed using available
+          property editors, read-write properties to be altered and public method to be called.
+        </p>
+        <p>
+          The bean console is installed on &quot;/bean-console&quot; context path of local web server running on port 8080
+          (&quot;http://localhost:8080/bean-console&quot;). It is implemented using <a href="#Danube">Danube</a>,
+          <a href="#Spring-WebFlow">Spring Webflow</a> and <a href="#FreeMarker">FreeMarker</a>. Source code is supplied.
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <a name="links"></a>
+      <h2>Links</h2>
+      <ul>
+        <li><a name="Danube"></a><a href="http://www.abstracthorizon.org/danube/index.html" target="new_page">Danube</a></li>
+        <li><a name="FreeMarker"></a><a href="http://freemarker.sourceforge.net" target="new_page">FreeMarker</li>
+        <li><a name="Java"></a><a href="http://java.sun.com" target="new_page">Java</a></li>
+        <li><a name="JBoss"></a><a href="http://www.jboss.org" target="new_page">JBoss</li>
+        <li><a name="JBossMicrocontainer"></a><a href="http://www.jboss.org/products/jbossmc" target="new_page">JBoss Microcontainer</li>
+        <li><a name="Spring"></a><a href="http://www.springframework.org" target="new_page">Spring</a></li>
+        <li><a name="Spring-Webflow"></a><a href="http://opensource2.atlassion.com/confluence/spring/display/WEBFLOW/Home" target="new_page">Spring-Webflow</a></li>
+        <li><a name="Tomcat"></a><a href="http://tomcat.apache.org" target="new_page">Tomcat</li>
+        <li><a name="Jetty"></a><a href="http://jetty.mortbay.org" target="new_page">Jetty</li>
+        <li><a name="Velocity"></a><a href="http://jakarta.apache.org/velocity" target="new_page">Velocity Template Engine</li>
+        <li><a name="WebWork"></a><a href="http://www.opensymphony.com/webwork" target="new_page">WebWork</li>
+      </ul>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Extend Documentation - Security</title>
+  </properties>
+
+  <head>
+  </head>
+
+  <body>
+    <section name="Security">
+      <p>
+        Extend provides simple way of defining security configuration. Bean called
+        <a href="api/org/abstracthorizon/extend/server/auth/SpringAuthConfiguration.html">SpringAuthConfiguration</a>
+        hooks to system configuration (<code>javax.security.auth.login.Configuration</code>) and allows
+        login modules to be specified under login contexts.
+      </p>
+
+      <p>
+        At the moment there is only one login module implementation supplied:
+        <a href="api/org/abstracthorizon/extend/server/auth/jaas/keystore/KeyStoreLoginModule.html">KeyStoreLoginModule</a> and
+        <a href="api/org/abstracthorizon/extend/server/auth/jaas/keystore/KeyStoreModuleService.html">KeyStoreModuleService</a> service
+        to be used to configure
+        <a href="api/org/abstracthorizon/extend/server/auth/jaas/keystore/KeyStoreLoginModule.html">KeyStoreLoginModule</a>.
+      </p>
+      <p>
+        Service <a href="api/org/abstracthorizon/extend/server/auth/jaas/keystore/KeyStoreModuleService.html">KeyStoreModuleService</a>
+        has following attributes:
+      </p>
+      <ul>
+        <li><code>loginContext</code> - login context name</li>
+        <li><code>configuration</code> - configuration bean (usually just reference to &quot;javax.security.auth.login&quot;)</li>
+        <li><code>keyStore</code> - name of resource of key store</li>
+        <li><code>keyStorePassword</code> - password of given keystore</li>
+        <li><code>keyStoreType</code> - type of key store (optional)</li>
+        <li><code>keyStoreProvider</code> - key store provider (optional)</li>
+        <li><code>controlFlag</code> - control flag - one of &quot;required&quot;, &quot;requisite&quot;, &quot;sufficient&quot; or &quot;optional&quot;. Defaulted to &quot;required&quot;.</li>
+      </ul>
+      <p>
+        For example of a login module definition see bean-console's <code>web-application.xml</code>.
+      </p>
+
+    </section>
+
+  </body>
+</document>
