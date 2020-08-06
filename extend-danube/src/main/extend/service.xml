@@ -49,7 +49,7 @@
   <!--
     This is SSL socket service listening on port 8443.
   -->
-  <!--  bean name="danube-ssl-server" class="org.abstracthorizon.danube.service.spring.SSLServerSocketService">
+  <bean name="danube-ssl-server" class="org.abstracthorizon.danube.service.server.MultiThreadServerSSLSocketService">
     <service />
     <property name="name" value="Danube"/>
     <property name="port" value="8443"/>
@@ -57,8 +57,8 @@
     <property name="newSocketTimeout" value="60000"/>
     <property name="connectionHandler" ref="httpServerConnectionHandler"/>
     <property name="keyStorePassword" value="danubekey"/>
-    <property name="keyStore" value="META-INF/danubessl.jks"/>
-  </bean -->
+    <property name="keyStoreURL" value="META-INF/danubessl.jks"/>
+  </bean>
 
   <!--
     This is http server connection handler. This is starting point for Danube web server. After connection is

@@ -136,7 +136,9 @@ public class Bootstrap {
         File log4jFile = new File(folder, "config/log4j.xml");
         if (log4jFile.exists()) {
             DOMConfigurator.configureAndWatch(log4jFile.getAbsolutePath(), 10000);
-            // System.out.println("************** configured log4j from " + log4jFile.getAbsolutePath());
+            if (debug) {
+                System.out.println("  Configured log4j from " + log4jFile.getAbsolutePath());
+            }
         }
 
 
@@ -341,10 +343,12 @@ public class Bootstrap {
 
         protected LinkedHashSet<ModuleLoader> moduleLoaders = new LinkedHashSet<ModuleLoader>();
 
+        @Override
         public void create(Module module) {
             module.create();
         }
 
+        @Override
         public void deploy(ModuleId moduleId, Module module) {
             deployedModules.put(moduleId, module);
             create(module);
@@ -354,10 +358,12 @@ public class Bootstrap {
             if (debug) { System.out.println("Deployed " + moduleId); }
         }
 
+        @Override
         public void destroy(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public Module loadAndDeploy(URI uri) {
             Module m = deployedModules.get(uri);
             if (m == null) {
@@ -378,35 +384,43 @@ public class Bootstrap {
             return m;
         }
 
+        @Override
         public EnhancedMap<ModuleId, Module> getDeployedModules() {
             return deployedModules;
         }
 
+        @Override
         public Set<ModuleLoader> getModuleLoaders() {
             return moduleLoaders;
         }
 
+        @Override
         public void redeploy(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void setModuleLoaders(Set<ModuleLoader> moduleLoaders) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void start(Module module) {
             module.start();
             if (debug) { System.out.println("Started " + module.getModuleId()); }
         }
 
+        @Override
         public void stop(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void undeploy(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public boolean canLoad(URI url) {
             for (ModuleLoader loader : moduleLoaders) {
                 if (loader.canLoad(url)) {
@@ -421,6 +435,7 @@ public class Bootstrap {
          * @param uri uri
          * @return module id or <code>null</code>
          */
+        @Override
         public ModuleId toModuleId(URI uri) {
             String path = uri.getPath();
             if (path != null) {
@@ -432,6 +447,7 @@ public class Bootstrap {
             }
         }
 
+        @Override
         public Module load(URI uri) {
             Module module = null;
             for (ModuleLoader loader : moduleLoaders) {
@@ -443,6 +459,7 @@ public class Bootstrap {
             return module;
         }
 
+        @Override
         public Module loadAs(URI uri, ModuleId moduleId) {
             Module module = null;
             for (ModuleLoader loader : moduleLoaders) {

@@ -120,6 +120,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * Returns repositories
      * @return repositories
      */
+    @Override
     public Map<String, RepositoryDefinition> getRepositories() {
         return repositories;
     }
@@ -131,6 +132,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * @param releases releases enabled
      * @param shapshots snapshots enabled
      */
+    @Override
     public void addRepository(String id, URL url, boolean releases, boolean snapshots) {
         RepositoryDefinition def = new RepositoryDefinition(id, url, releases, snapshots);
         getRepositories().put(id, def);
@@ -188,6 +190,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * Returns failed urls map.
      * @return failed urls map
      */
+    @Override
     public Map<URL, Long> getFailedURLs() {
         return failedURLS;
     }
@@ -196,6 +199,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * Returns succedded urls map.
      * @return succedded urls map
      */
+    @Override
     public Map<URL, Long> getSucceddedURLs() {
         return succeddedURLS;
     }
@@ -237,6 +241,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * only local to be used (if exsits).
      * @return checkSnapshotVersions
      */
+    @Override
     public boolean isCheckSnapshotVersions() {
         return checkSnapshotVersions;
     }
@@ -246,6 +251,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * only local to be used (if exsits).
      * @param checkSnapshotVersions
      */
+    @Override
     public void setCheckSnapshotVersions(boolean checkSnapshotVersions) {
         this.checkSnapshotVersions = checkSnapshotVersions;
     }
@@ -271,6 +277,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
     /**
      * Method that sets up this object.
      */
+    @Override
     public void start() {
         super.start();
 
@@ -312,12 +319,16 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
         try {
             // TODO setting up urls lasts too long. Why?
             if (repositories.size() == 0) {
-                addRepository("central", new URL("http://repo1.maven.org/maven2"), true, false);
+                addRepository("central", new URL("https://repo1.maven.org/maven2"), true, false);
                 addRepository("abstracthorizon", new URL("http://repository.abstracthorizon.org/maven2/abstracthorizon"), true, false);
                 addRepository("abstracthorizon.snapshot", new URL("http://repository.abstracthorizon.org/maven2/abstracthorizon.snapshot"), false, true);
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
+        }
+
+        for (RepositoryDefinition repo : repositories.values()) {
+            Extend.debug.info("  Using repository " + repo.getURL().toString() + " : " + (repo.isReleasesEnabled() ? "releases " : "") + (repo.isSnapshotsEnabled() ? "snapshots " : ""));
         }
 
         Extend.info.debug("Using local cache at " + localRepository.getAbsolutePath());
@@ -327,6 +338,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
     /**
      * Stop method removes URLResolver from &quot;DefaultURLResolver&quot;.
      */
+    @Override
     public void stop() {
         super.stop();
 
@@ -343,6 +355,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * @param uri URI
      * @return <code>true</code> if URI protocol is &quot;repo&quot; and file starts with &quot;maven&quot;.
      */
+    @Override
     public boolean canLoad(URI uri) {
         String f = uri.getSchemeSpecificPart();
         String scheme = uri.getScheme();
@@ -359,6 +372,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
         return false;
     }
 
+    @Override
     public ModuleId toModuleId(URI uri) {
         if (canLoad(uri)) {
             String file = uri.getSchemeSpecificPart();
@@ -374,6 +388,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * Loads a file from maven style repository
      * @param uri URI
      */
+    @Override
     public Module load(URI uri) {
         String file = uri.getSchemeSpecificPart();
         if (file != null) {
@@ -389,6 +404,7 @@ public class MavenRepoModuleLoader extends AbstractServiceModuleLoader implement
      * @param uri URI
      * @param moduleId module id
      */
+    @Override
     public Module loadAs(URI uri, ModuleId moduleId) {
         if (!(moduleId instanceof Artifact)) {
             moduleId = new Artifact(moduleId);
