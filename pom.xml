@@ -449,7 +449,7 @@
   <distributionManagement>
     <site>
       <id>abstracthorizon.site</id>
-      <url>scpexe://server.creative-sphere.com/srv/www.abstracthorizon.org/html/extend</url>
+      <url>scp://server.creative-sphere.com/srv/www.abstracthorizon.org/html/extend</url>
     </site>
   </distributionManagement>
 
