@@ -14,18 +14,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TryIt {
-    
+
     public static Logger logger = LoggerFactory.getLogger(TryIt.class);
-    
+
     public static void main(String[] args) throws Exception {
-        
+
         DeploymentManager deploymentManager = new DeploymentManagerStub();
-        
-        
+
+
         ParallelRepositoryModuleLoader loader = new ParallelRepositoryModuleLoader();
         loader.setCheckSnapshotVersions(true);
         loader.setDeploymentManager(deploymentManager);
-        
+
         JarModuleLoader jarModuleLoader = new JarModuleLoader();
         jarModuleLoader.setDeploymentManager(deploymentManager);
         jarModuleLoader.getExtensions().add(".jar");
@@ -34,7 +34,7 @@ public class TryIt {
         URI uri = new URI("repo:maven:org.abstracthorizon.extend.support:extend-server-control-client:1.2:jar");
 
         loader.start();
-        
+
         long now = System.currentTimeMillis();
         logger.info("Loading module: " + uri + " ============================================================================================");
         loader.load(uri);
@@ -43,7 +43,7 @@ public class TryIt {
         logger.info("");
         logger.info("Lasted " + (System.currentTimeMillis() - now) + "ms");
     }
-    
+
 
     public static class DeploymentManagerStub implements DeploymentManager {
 
@@ -69,7 +69,7 @@ public class TryIt {
         }
 
         public Module loadAndDeploy(URI uri) {
-            Module m = deployedModules.get(uri);
+            Module m = deployedModules.get(toModuleId(uri));
             if (m == null) {
                 m = load(uri);
                 if (m != null) {
@@ -121,7 +121,7 @@ public class TryIt {
             }
             return false;
         }
-        
+
         /**
          * Translates URI to moduleId
          * @param uri uri

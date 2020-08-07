@@ -75,7 +75,7 @@ public class DeploymentManagerImpl implements DeploymentManager {
                     Extend.info.error(errorMsg);
                     throw new RuntimeException(errorMsg);
                 }
-                deployedModules.remove(old);
+                deployedModules.remove(old.getModuleId());
             }
             deployedModules.put(moduleId, module);
 
@@ -125,7 +125,7 @@ public class DeploymentManagerImpl implements DeploymentManager {
         }
         destroy(module);
 
-        deployedModules.remove(module);
+        deployedModules.remove(moduleId);
         if (Extend.info.isInfoEnabled()) {
             Extend.info.info("Module '" + moduleId + "' is now undeployed.");
         }
@@ -455,7 +455,7 @@ public class DeploymentManagerImpl implements DeploymentManager {
         }
         return false;
     }
-    
+
     /**
      * Translates URI to moduleId
      * @param uri uri
@@ -472,8 +472,8 @@ public class DeploymentManagerImpl implements DeploymentManager {
         }
         return null;
     }
-    
-    
+
+
     /**
      * Loads module from given URI. If none of registered module loaders can load the module
      * new {@link ProvisionalModule} is created with the name of last part of the URI.
@@ -493,7 +493,7 @@ public class DeploymentManagerImpl implements DeploymentManager {
 //        if (module == null) {
 //            module = new UnknownLoaderModule(uri);
 //        }
-        
+
         return module;
     }
 

@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Bootstrap class that sets up Extend through maven style repository
- * 
+ *
  * @author Daniel Sendula
  */
 public class Bootstrap {
@@ -84,9 +84,9 @@ public class Bootstrap {
     protected List<String> extraRepos = new ArrayList<String>();
 
     protected boolean quick;
-    
+
     protected String repositoryLoaderBean = "Serial";
-    
+
     public Bootstrap() {
         try {
             folder = new File("").getCanonicalFile();
@@ -346,7 +346,7 @@ public class Bootstrap {
                 System.out.println("*** " + e.getMessage());
             }
         }
-        
+
         File dot_m2 = new File(folder, ".m2");
         if (!dot_m2.exists()) {
             if (!dot_m2.mkdirs()) {
@@ -442,7 +442,7 @@ public class Bootstrap {
 
         springBasedServer.start();
 
-        
+
         weStarted = true;
         logger.info("Extend (" + version + ") is started at " + springBasedServer.getHomeLocation());
     }
@@ -483,10 +483,10 @@ public class Bootstrap {
         stop();
     }
 
-    
+
     protected void start(String moduleId) throws Exception {
         if (weStarted) {
-            Module module = finalDeploymentManager.getDeployedModules().get(moduleId);
+            Module module = finalDeploymentManager.getDeployedModules().get(ModuleId.parseModuleIdString(moduleId));
             if (module != null) {
                 try {
                     finalDeploymentManager.start(module);
@@ -504,10 +504,10 @@ public class Bootstrap {
             logger.info("Start " + moduleId + " - " + line);
         }
     }
-    
+
     protected void stop(String moduleId) throws Exception {
         if (weStarted) {
-            Module module = finalDeploymentManager.getDeployedModules().get(moduleId);
+            Module module = finalDeploymentManager.getDeployedModules().get(ModuleId.parseModuleIdString(moduleId));
             if (module != null) {
                 finalDeploymentManager.stop(module);
             }
@@ -521,8 +521,8 @@ public class Bootstrap {
             logger.info("Stop " + moduleId + " - " + line);
         }
     }
-    
-    
+
+
     public void deploy(String location) throws Exception {
         if (weStarted) {
             try {
@@ -552,7 +552,7 @@ public class Bootstrap {
 
     public void undeploy(String moduleId) throws Exception {
         if (weStarted) {
-            Module module = finalDeploymentManager.getDeployedModules().get(moduleId);
+            Module module = finalDeploymentManager.getDeployedModules().get(ModuleId.parseModuleIdString(moduleId));
             if (module != null) {
                 try {
                     finalDeploymentManager.undeploy(module);
@@ -740,7 +740,7 @@ public class Bootstrap {
             }
             return false;
         }
-        
+
         /**
          * Translates URI to moduleId
          * @param uri uri

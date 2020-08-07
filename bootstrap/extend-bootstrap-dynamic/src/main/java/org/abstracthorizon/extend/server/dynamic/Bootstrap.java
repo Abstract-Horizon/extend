@@ -365,11 +365,12 @@ public class Bootstrap {
 
         @Override
         public Module loadAndDeploy(URI uri) {
-            Module m = deployedModules.get(uri);
+            ModuleId moduleId = toModuleId(uri);
+            Module m = deployedModules.get(moduleId);
             if (m == null) {
                 m = load(uri);
                 if (m != null) {
-                    ModuleId moduleId = m.getModuleId();
+                    moduleId = m.getModuleId();
                     if (!deployedModules.containsValue(m)) {
                         try {
                             deploy(moduleId, m);

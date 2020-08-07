@@ -10,8 +10,6 @@
 
   <artifactId>extend-client-ssl</artifactId>
 
-  <groupId>org.abstracthorizon.extend.support</groupId>
-
   <packaging>jar</packaging>
 
   <name>Extend (Support - Client SSL)</name>
