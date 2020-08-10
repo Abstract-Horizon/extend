@@ -741,7 +741,7 @@ public class FullTomcatController {
             FileReader reader = new FileReader(deployedModulesExtendDescriptorFile);
             try {
                 @SuppressWarnings("resource")
-				BufferedReader in = new BufferedReader(reader);
+                BufferedReader in = new BufferedReader(reader);
                 String line = in.readLine();
                 while (line != null) {
                     line = line.trim();
@@ -983,7 +983,7 @@ public class FullTomcatController {
                 FileReader fileReader = new FileReader(tomcatUsersDotXml);
                 try {
                     @SuppressWarnings("resource")
-					BufferedReader in = new BufferedReader(fileReader);
+                    BufferedReader in = new BufferedReader(fileReader);
                     String line = in.readLine();
                     while (line != null) {
                         if (!roleFound && line.trim().equals("<tomcat-users>")) {

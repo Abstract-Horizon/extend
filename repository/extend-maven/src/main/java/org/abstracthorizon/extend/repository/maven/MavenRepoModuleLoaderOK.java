@@ -123,7 +123,7 @@ public class MavenRepoModuleLoaderOK extends AbstractServiceModuleLoader {
      * @param repositories repositories
      */
     public void setRepositories(Map<String, URL> repositories) {
-    	this.repositories = repositories;
+        this.repositories = repositories;
     }
 
     /**
@@ -131,7 +131,7 @@ public class MavenRepoModuleLoaderOK extends AbstractServiceModuleLoader {
      * @return repositories
      */
     public Map<String, URL> getRepositories() {
-    	return repositories;
+        return repositories;
     }
 
     /**
@@ -669,7 +669,7 @@ public class MavenRepoModuleLoaderOK extends AbstractServiceModuleLoader {
                                 }
 
                                 if (!toFile.equals(tempFile)) {
-                                	copyFile(tempFile, toFile);
+                                    copyFile(tempFile, toFile);
                                 }
                                 return;
                             }
@@ -687,7 +687,7 @@ public class MavenRepoModuleLoaderOK extends AbstractServiceModuleLoader {
     }
 
     public void downloadFile(URL url, Artifact artifact, File toFile, Stack<Artifact> stack) throws FileNotFoundException {
-    	downloadFile(url, artifact, artifact.getVersion(), toFile, stack);
+        downloadFile(url, artifact, artifact.getVersion(), toFile, stack);
     }
 
     public void downloadFile(URL url, Artifact artifact, String altVersion, File toFile, Stack<Artifact> stack) throws FileNotFoundException {
@@ -703,7 +703,7 @@ public class MavenRepoModuleLoaderOK extends AbstractServiceModuleLoader {
 
             // TODO
             if (logger.isDebugEnabled()) {
-            	logger.info("Downloading from " + finalURL.toString());
+                logger.info("Downloading from " + finalURL.toString());
             }
             downloadFile(finalURL, toFile, stack);
         } catch (UnsupportedEncodingException e2) {
@@ -767,38 +767,38 @@ public class MavenRepoModuleLoaderOK extends AbstractServiceModuleLoader {
      * @return
      */
     public static boolean copyFile(File fromFile, File toFile) {
-    	if (!toFile.equals(fromFile)) {
-	        try {
-	            FileInputStream fromInputStream = new FileInputStream(fromFile);
-	            try {
-	                FileOutputStream toOutputStream = new FileOutputStream(toFile);
-	                try {
-	                    FileChannel inChannel = fromInputStream.getChannel();
-	                    try {
-	                        FileChannel outChannel = toOutputStream.getChannel();
-	                        try {
-	                            MappedByteBuffer buffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
+        if (!toFile.equals(fromFile)) {
+            try {
+                FileInputStream fromInputStream = new FileInputStream(fromFile);
+                try {
+                    FileOutputStream toOutputStream = new FileOutputStream(toFile);
+                    try {
+                        FileChannel inChannel = fromInputStream.getChannel();
+                        try {
+                            FileChannel outChannel = toOutputStream.getChannel();
+                            try {
+                                MappedByteBuffer buffer = inChannel.map(FileChannel.MapMode.READ_ONLY, 0, inChannel.size());
 
-	                            outChannel.write(buffer);
-	                        } finally {
-	                            outChannel.close();
-	                        }
-	                    } finally {
-	                        inChannel.close();
-	                    }
-	                } finally {
-	                    toOutputStream.close();
-	                }
-	            } finally {
-	                fromInputStream.close();
-	            }
-	            return true;
-	        } catch (IOException exc) {
-	            return false;
-	        }
-    	} else {
-    		return true;
-    	}
+                                outChannel.write(buffer);
+                            } finally {
+                                outChannel.close();
+                            }
+                        } finally {
+                            inChannel.close();
+                        }
+                    } finally {
+                        toOutputStream.close();
+                    }
+                } finally {
+                    fromInputStream.close();
+                }
+                return true;
+            } catch (IOException exc) {
+                return false;
+            }
+        } else {
+            return true;
+        }
     }
     
     protected String stackToString(Stack<Artifact> stack) {

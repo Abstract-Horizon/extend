@@ -142,7 +142,7 @@ public class KeyStoreModuleService implements ApplicationContextAware {
     public String listUsersString() throws Exception {
         List<String> u = listUsers();
         String[] users = new String[u.size()];
-        users = (String[])u.toArray(users);
+        users = u.toArray(users);
 
         StringBuffer res = new StringBuffer();
         res.append("[");
@@ -265,7 +265,7 @@ public class KeyStoreModuleService implements ApplicationContextAware {
      * @throws CertificateException
      */
     @SuppressWarnings("resource")
-	protected void storeKeyStore(KeyStore keystore) throws KeyStoreException, NoSuchProviderException, MalformedURLException,
+    protected void storeKeyStore(KeyStore keystore) throws KeyStoreException, NoSuchProviderException, MalformedURLException,
         IOException, NoSuchAlgorithmException, CertificateException {
 
         Extend.info.debug("Storing keystore to " + keystoreResource.toString() + " for login context '" + loginContext + "'");

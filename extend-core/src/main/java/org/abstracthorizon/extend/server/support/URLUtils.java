@@ -35,7 +35,7 @@ public class URLUtils {
      * @param file string to be added to the end of file part of given url
      * @return new url
      * @throws MalformedURLException
-     * @throws UnsupportedEncodingException 
+     * @throws UnsupportedEncodingException
      */
     public static URL add(URL url, String file) throws MalformedURLException, UnsupportedEncodingException {
         String p = addPaths(url.getFile(), file);
@@ -125,29 +125,29 @@ public class URLUtils {
     }
 
     public static String addPaths(String p1, String p2) {
-    	if (p1 == null) {
-    		return p2;
-    	} else if (p2 == null) {
-    		return p1;
-    	}
-    	if (p1.endsWith("/")) {
-    		if (p2.equals("/")) {
-    			return p1;
-    		} else if (p2.startsWith("/")) {
-    			return p1 + p2.substring(1);
-    		} else {
-    			return p1 + p2;
-    		}
-    	} else if (p2.startsWith("/")) {
-    		if (p1.endsWith("/")) {
-    			return p1 + p2.substring(1);
-    		} else if (p1.equals("/")) {
-    			return p2;
-    		} else {
-    			return p1 + p2;
-    		}
-    	} else {
-    		return p1 + "/" + p2;
-    	}
+        if (p1 == null) {
+            return p2;
+        } else if (p2 == null) {
+            return p1;
+        }
+        if (p1.endsWith("/")) {
+            if (p2.equals("/")) {
+                return p1;
+            } else if (p2.startsWith("/")) {
+                return p1 + p2.substring(1);
+            } else {
+                return p1 + p2;
+            }
+        } else if (p2.startsWith("/")) {
+            if (p1.endsWith("/")) {
+                return p1 + p2.substring(1);
+            } else if (p1.equals("/")) {
+                return p2;
+            } else {
+                return p1 + p2;
+            }
+        } else {
+            return p1 + "/" + p2;
+        }
     }
 }

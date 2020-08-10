@@ -74,10 +74,10 @@ public abstract class SpringAbstractServiceModuleLoader extends AbstractServiceM
      * Adds this loader to &quot;DeploymentManager&quot; {@link DeploymentManager}.
      */
     public void start() {
-    	if (getDeploymentManager() == null) {
-	        DeploymentManager deploymentManager = (DeploymentManager)root.getBean(DeploymentManager.DEPLOYMENT_MANAGER_DEFAULT_NAME);
-	        setDeploymentManager(deploymentManager);
-    	}
+        if (getDeploymentManager() == null) {
+            DeploymentManager deploymentManager = (DeploymentManager)root.getBean(DeploymentManager.DEPLOYMENT_MANAGER_DEFAULT_NAME);
+            setDeploymentManager(deploymentManager);
+        }
         super.start();
     }
 }

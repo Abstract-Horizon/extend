@@ -486,7 +486,7 @@ public class Bootstrap {
             file = file.substring(0, i);
             i = file.lastIndexOf("/");
             if (i >= 0) {
-            	file = file.substring(i + 1);
+                file = file.substring(i + 1);
             }
             return file;
         } else {
