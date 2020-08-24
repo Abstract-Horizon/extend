@@ -18,6 +18,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -218,6 +220,17 @@ public class DeploymentDirectoryModule implements Module, Runnable {
         Map<File, Long> o = (Map<File, Long>)files.clone();
         File[] fs = path.listFiles();
         if (fs != null) {
+            Arrays.sort(fs, new Comparator<File>() {
+                @Override public int compare(File f1, File f2) {
+                    if (f1.isDirectory() && !f2.isDirectory()) {
+                        return -1;
+                    } else if (!f1.isDirectory() && f2.isDirectory()) {
+                        return 1;
+                    }
+                    return f1.getName().compareTo(f2.getName());
+                }
+            });
+
             for (File file : fs) {
                 Long lastChange = o.get(file);
                 if (lastChange == null) {
