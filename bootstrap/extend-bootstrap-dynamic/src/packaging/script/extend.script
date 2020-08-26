@@ -1,0 +1,9 @@
+#!/bin/sh
+
+export EXTEND_VERSION=${project.version}
+export EXTEND_TIMESTAMP=${maven.build.timestamp}
+
+echo "Starting extend ${EXTEND_VERSION} build ${EXTEND_TIMESTAMP}"
+
+exec java -Xmx1G -jar "$0" "$@"
+

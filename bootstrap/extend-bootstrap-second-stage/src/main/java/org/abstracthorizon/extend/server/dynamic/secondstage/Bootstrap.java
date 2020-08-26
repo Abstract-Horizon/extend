@@ -266,10 +266,8 @@ public class Bootstrap {
     }
 
     public void help() {
-        try {
-            InputStream inputStream = getClass().getResourceAsStream("help.txt");
-            try {
-                BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+        try (InputStream inputStream = getClass().getResourceAsStream("help.txt")) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(inputStream))) {
                 String line = in.readLine();
                 while (line != null) {
                     line = processHelpLine(line);
@@ -613,47 +611,59 @@ public class Bootstrap {
             this.moduleId = moduleId;
         }
 
+        @Override
         public void create() {
         }
 
+        @Override
         public void destroy() {
         }
 
+        @Override
         public ClassLoader getClassLoader() {
             return classLoader;
         }
 
+        @Override
         public Set<Module> getDependOnThis() {
             return dependOnThis;
         }
 
+        @Override
         public Set<Module> getDependsOn() {
             return dependsOn;
         }
 
+        @Override
         public ModuleId getModuleId() {
             return moduleId;
         }
 
+        @Override
         public URL getOriginalLocation() {
             return null;
         }
 
+        @Override
         public int getState() {
             return Module.STARTED;
         }
 
+        @Override
         public URL getWorkingLocation() {
             return null;
         }
 
+        @Override
         public void setState(int state) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void start() {
         }
 
+        @Override
         public void stop() {
         }
 
@@ -674,10 +684,12 @@ public class Bootstrap {
 
         protected LinkedHashSet<ModuleLoader> moduleLoaders = new LinkedHashSet<ModuleLoader>();
 
+        @Override
         public void create(Module module) {
             module.create();
         }
 
+        @Override
         public void deploy(ModuleId moduleId, Module module) {
             deployedModules.put(moduleId, module);
             create(module);
@@ -687,10 +699,12 @@ public class Bootstrap {
             logger.debug("Deployed " + moduleId);
         }
 
+        @Override
         public Module loadAndDeploy(URI uri) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void destroy(Module module) {
             throw new RuntimeException("Not implemented");
         }
@@ -703,35 +717,43 @@ public class Bootstrap {
 //            return module;
 //        }
 
+        @Override
         public EnhancedMap<ModuleId, Module> getDeployedModules() {
             return deployedModules;
         }
 
+        @Override
         public Set<ModuleLoader> getModuleLoaders() {
             return moduleLoaders;
         }
 
+        @Override
         public void redeploy(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void setModuleLoaders(Set<ModuleLoader> moduleLoaders) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void start(Module module) {
             module.start();
             logger.debug("Started " + module.getModuleId());
         }
 
+        @Override
         public void stop(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public void undeploy(Module module) {
             throw new RuntimeException("Not implemented");
         }
 
+        @Override
         public boolean canLoad(URI url) {
             for (ModuleLoader loader : moduleLoaders) {
                 if (loader.canLoad(url)) {
@@ -746,6 +768,7 @@ public class Bootstrap {
          * @param uri uri
          * @return module id or <code>null</code>
          */
+        @Override
         public ModuleId toModuleId(URI uri) {
             String path = uri.getPath();
             if (path != null) {
@@ -757,6 +780,7 @@ public class Bootstrap {
             }
         }
 
+        @Override
         public Module load(URI uri) {
             Module module = null;
             for (ModuleLoader loader : moduleLoaders) {
@@ -768,6 +792,7 @@ public class Bootstrap {
             return module;
         }
 
+        @Override
         public Module loadAs(URI uri, ModuleId moduleId) {
             Module module = null;
             for (ModuleLoader loader : moduleLoaders) {
