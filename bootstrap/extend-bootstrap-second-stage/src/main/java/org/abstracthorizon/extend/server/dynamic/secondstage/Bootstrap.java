@@ -388,6 +388,8 @@ public class Bootstrap {
             throw new RuntimeException("Server is already running on the location " + folder.getAbsolutePath());
         }
 
+        Extend.info.info("Starting server at location " + folder.getAbsolutePath());
+
         deploymentManager = new DeploymentManagerStub();
 
         ModuleId bootstrapModuleId = new ModuleId();

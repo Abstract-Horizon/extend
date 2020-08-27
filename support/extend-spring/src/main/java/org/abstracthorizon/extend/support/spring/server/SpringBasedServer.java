@@ -35,7 +35,7 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
 /**
  * This class sets up the server.
- * 
+ *
  * @author Daniel Sendula
  */
 public class SpringBasedServer {
@@ -64,7 +64,7 @@ public class SpringBasedServer {
 
     /**
      * Constructgor.
-     * 
+     *
      * @param homeLocation
      *                home locaiton of server. Root path where bin directory is.
      * @param serverLocation
@@ -80,6 +80,7 @@ public class SpringBasedServer {
      */
     public void create() {
         try {
+            Extend.info.info("Setting up the server at location " + serverLocation.toString());
             URL lib = URLUtils.add(serverLocation, "lib/");
 
             classLoader = ClassUtils.createClassLoader(getClass().getClassLoader(), lib);
@@ -100,7 +101,7 @@ public class SpringBasedServer {
      * This method deploys &quot;deploy&quot; directory. Effectively this function starts up the server.
      */
     public void start() {
-        Extend.info.info("Setting up the server");
+        Extend.info.info("Starting up the server");
         try {
             if ("file".equals(serverLocation.getProtocol())) {
                 String f = URLDecoder.decode(serverLocation.getFile(), "UTF-8");
@@ -142,7 +143,7 @@ public class SpringBasedServer {
 
     /**
      * Does nothing.
-     * 
+     *
      */
     public void stop() {
         DeploymentManager deploymentManager = (DeploymentManager) serverApplicationContext
@@ -164,7 +165,7 @@ public class SpringBasedServer {
 
     /**
      * Closes server's context and clears down class loader
-     * 
+     *
      */
     public void destroy() {
         serverApplicationContext.close();
@@ -184,7 +185,7 @@ public class SpringBasedServer {
 
     /**
      * Deploys bootstrap modules from &quot;/config/bootstrap.deploy&quot; file.
-     * 
+     *
      * @param bulkDeploy
      */
     public void bootstrapDeploy(BulkDeploy bulkDeploy) {
@@ -210,7 +211,7 @@ public class SpringBasedServer {
 
     /**
      * Returns server's location
-     * 
+     *
      * @return server's location
      */
     public URL getServerLocation() {
@@ -219,7 +220,7 @@ public class SpringBasedServer {
 
     /**
      * Sets server's location
-     * 
+     *
      * @param serverLocation
      *                server's location
      */
@@ -229,7 +230,7 @@ public class SpringBasedServer {
 
     /**
      * Returns home location
-     * 
+     *
      * @return home location
      */
     public URL getHomeLocation() {
@@ -238,7 +239,7 @@ public class SpringBasedServer {
 
     /**
      * Sets home location
-     * 
+     *
      * @param homeLocation
      *                home location
      */
@@ -248,7 +249,7 @@ public class SpringBasedServer {
 
     /**
      * Returns class loader
-     * 
+     *
      * @return class loader
      */
     public ClassLoader getClassLoader() {
@@ -257,7 +258,7 @@ public class SpringBasedServer {
 
     /**
      * Sets class loader
-     * 
+     *
      * @param classLoader
      *                class loader
      */
@@ -267,7 +268,7 @@ public class SpringBasedServer {
 
     /**
      * Returns server application context
-     * 
+     *
      * @return server application context
      */
     public SpringBasedServerApplicationContext getServerApplicationContext() {
@@ -276,7 +277,7 @@ public class SpringBasedServer {
 
     /**
      * Helper method for registering singleton beans with the server's application context
-     * 
+     *
      * @param name
      *                bean name
      * @param bean
