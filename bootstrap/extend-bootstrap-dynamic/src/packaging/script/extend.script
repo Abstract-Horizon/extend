@@ -3,7 +3,15 @@
 export EXTEND_VERSION=${project.version}
 export EXTEND_TIMESTAMP=${maven.build.timestamp}
 
-echo "Starting extend ${EXTEND_VERSION} build ${EXTEND_TIMESTAMP}"
+ARGS=$@
 
-exec java -Xmx1G -jar "$0" "$@"
+if [ -z $ARGS ]
+then
+  ARGS="start"
+fi
+
+
+echo "Starting extend ${EXTEND_VERSION} build ${EXTEND_TIMESTAMP}\n\n $0 $ARGS \n\n"
+
+exec java -Xmx1G -jar "$0" "$ARGS"
 
